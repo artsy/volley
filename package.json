@@ -1,0 +1,19 @@
+{
+  "name": "metric",
+  "version": "1.0.0",
+  "description": "Forward client-side metrics to Datadog",
+  "main": "index.js",
+  "repository": "https://github.com/artsy/metric",
+  "author": "Alan Johnson",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "koa": "^2.5.1",
+    "koa-body": "^2.5.0",
+    "koa-router": "^7.4.0",
+    "node-dogstatsd": "^0.0.7"
+  }
+}
