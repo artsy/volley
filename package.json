@@ -15,5 +15,17 @@
     "koa-body": "^2.5.0",
     "koa-router": "^7.4.0",
     "node-dogstatsd": "^0.0.7"
+  },
+  "prettier": {
+    "bracketSpacing": true,
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write --single-quote --print-width 80 --no-semi",
+      "git add"
+    ]
   }
 }

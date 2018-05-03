@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "christian-kohler.path-intellisense",
+    "christian-kohler.npm-intellisense",
+    "dbaeumer.vscode-eslint",
+    "eg2.tslint",
+    "esbenp.prettier-vscode",
+    "Orta.vscode-jest"
+  ]
+}

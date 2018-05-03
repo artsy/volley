@@ -1,0 +1,25 @@
+{
+  "parser": "babel-eslint",
+  "extends": [
+    "standard",
+    "standard-react",
+    "prettier"
+  ],
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jest": true,
+    "mocha": true,
+    "node": true
+  },
+  "globals": {
+    "__VERBOSE__": true
+  },
+  "rules": {
+    "import/first": 0,
+    "camelcase": 0,
+    "no-mixed-operators": 0,
+    "no-new": 0,
+    "react/jsx-indent": 0
+  }
+}
