@@ -2,7 +2,7 @@
 version: '2'
 services:
   metric:
-    command: 
+    command: node node_modules/.bin/mocha
     environment:
     - NODE_ENV=test
     extends:
