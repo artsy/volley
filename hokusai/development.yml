@@ -1,0 +1,18 @@
+---
+version: '2'
+services:
+  volley:
+    command: node index.js
+    environment:
+    - NODE_ENV=development
+    - METRIC_NAME_WHITELIST=latency 
+    - METRIC_TAG_WHITELIST=page-type:home,mark:dom-complete,mark:load-event-end
+    - PORT=5500
+    - STATSD_HOST=docker.for.mac.localhost
+    extends:
+      file: common.yml
+      service: volley
+    ports:
+      - 5500:5500
+    volumes:
+      - ../:/app

@@ -1,0 +1,22 @@
+{
+  "editor.formatOnSave": true,
+  "eslint.autoFixOnSave": true,
+  "tslint.autoFixOnSave": true,
+  "[json]": {
+    "editor.formatOnSave": false
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/.DS_Store": true,
+    ".jest/": true,
+    ".babel-cache/": true,
+    "build": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    ".jest/*": true
+  },
+  "typescript.tsdk": "./node_modules/typescript/lib"
+}

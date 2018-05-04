@@ -1,0 +1,36 @@
+{
+  "name": "volley",
+  "version": "1.0.0",
+  "description": "Forward client-side metrics to Datadog",
+  "main": "src/index.js",
+  "repository": "https://github.com/artsy/volley",
+  "author": "Alan Johnson",
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha"
+  },
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "koa": "^2.5.1",
+    "koa-body": "^2.5.0",
+    "koa-router": "^7.4.0",
+    "node-dogstatsd": "^0.0.7"
+  },
+  "prettier": {
+    "bracketSpacing": true,
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write --single-quote --print-width 80 --no-semi",
+      "git add"
+    ]
+  },
+  "devDependencies": {
+    "mocha": "^5.1.1",
+    "sinon": "^5.0.3"
+  }
+}
