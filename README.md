@@ -1,21 +1,21 @@
-# Metric
+# Volley
 
-[![CircleCI](https://circleci.com/gh/artsy/metric.svg?style=svg&circle-token=90026ccf3fbb8fd77ccad45fe6f36f853c36e209)](https://circleci.com/gh/artsy/metric)
+[![CircleCI](https://circleci.com/gh/artsy/volley.svg?style=svg&circle-token=90026ccf3fbb8fd77ccad45fe6f36f853c36e209)](https://circleci.com/gh/artsy/volley)
 
 Datadog Agent proxy service for client-side metrics collection.
 
 ## Meta
 
 * **State:** Early production
-* **Production:** [http://metric-production.artsy.net](http://metric-production.artsy.net)
-* **Staging:** [http://metric-staging.artsy.net](http://metric-staging.artsy.net)
+* **Production:** [http://volley-production.artsy.net](http://volley-production.artsy.net)
+* **Staging:** [http://volley-staging.artsy.net](http://volley-staging.artsy.net)
 * **Deploys:** Merges to `master` are auto-deployed to staging. Run `hokusai pipeline promote` to promote staging to production. See the [Hokusai docs](https://github.com/artsy/hokusai/blob/master/docs/Getting_Started.md) for other operational details.
-* **CI**: [Circle CI](https://circleci.com/gh/artsy/metric)
+* **CI**: [Circle CI](https://circleci.com/gh/artsy/volley)
 * **Point People:** [@acjay](https://github.com/acjay)
 
 ## Summary
 
-Metric is a thin HTTP wrapper for [node-dogstatsd](https://github.com/mrbar42/node-dogstatsd). It receives metric data from browser applications and forwards it to a Datadog Agent, which in turn handles collection of metrics from multiple sources into Datadog.
+Metric is a thin HTTP wrapper for [node-dogstatsd](https://github.com/mrbar42/node-dogstatsd). It receives metric data from browser applications and forwards it to a Datadog Agent, which in turn handles collection of volleys from multiple sources into Datadog.
 
 ## Development
 
@@ -40,11 +40,14 @@ That will build a Docker container with the app's dependencies. You can also run
 
 ### Whitelists
 
-Because Datadog plans have an allotment of custom metrics and tags, Metric offers the ability to restrict possible values for metric names and tags that are allowed. The whitelists are managed by environment variables.
+Because Datadog plans have an allotment of custom volleys and tags, Metric offers the ability to restrict possible values for volley names and tags that are allowed. The whitelists are managed by environment variables.
 
-* TODO insert example of adding a metric name
+* Get the current METRIC_NAME_WHITELIST with `hokusai staging env get METRIC_NAME_WHITELIST`
+* Set its new value with `hokusai staging env set METRIC_NAME_WHITELIST=preexisting-tag:value,new-tag:new-value`
+* Refresh the environment with `hokusai staging deployment refresh`
+* Do the same thing in `production` when you're satisfied.
 
-### Publishing metrics
+### Publishing volleys
 
 From a client application, make a POST request to the `/report` endpoint. Example:
 
@@ -52,7 +55,7 @@ From a client application, make a POST request to the `/report` endpoint. Exampl
 // TODO
 ```
 
-You may push multiple metrics in one payload. In all situations, Metric will respond with status code 202 and the text "OK", so watch Datadog for metrics appearing and [Metric's logs]() for errors.
+You may push multiple volleys in one payload. In all situations, Metric will respond with status code 202 and the text "OK", so watch Datadog for metrics appearing and [Metric's logs]() for errors.
 
 The following payload demonstrates the format of all possible metric types:
 
@@ -113,3 +116,9 @@ The following payload demonstrates the format of all possible metric types:
 	]
 }
 ```
+
+## Name
+
+A volley in sports is to knock an airborne ball onward without letting it touch the ground. Or it's a large number of projectiles airborn at once. Either way, it's a vaguely physics-oriented term, because of...motion...and stuff.
+
+Enjoy https://www.youtube.com/watch?v=1C9STKF0Lv4, for an example.

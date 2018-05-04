@@ -1,10 +1,10 @@
 ---
 version: '2'
 services:
-  metric:
+  volley:
     command: node node_modules/.bin/mocha
     environment:
     - NODE_ENV=test
     extends:
       file: common.yml
-      service: metric
+      service: volley

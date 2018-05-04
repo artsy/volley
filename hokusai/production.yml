@@ -2,7 +2,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: metric-web
+  name: volley-web
 spec:
   replicas: 2
   strategy:
@@ -13,14 +13,14 @@ spec:
   template:
     metadata:
       labels:
-        app: metric
+        app: volley
         component: web
         layer: application
-      name: metric-web
+      name: volley-web
       namespace: default
     spec:
       containers:
-      - name: metric-web
+      - name: volley-web
         env:
         - name: NODE_ENV
           value: production
@@ -32,8 +32,8 @@ spec:
           value: 8125
         envFrom:
         - configMapRef:
-            name: metric-environment
-        image: 585031190124.dkr.ecr.us-east-1.amazonaws.com/metric:production
+            name: volley-environment
+        image: 585031190124.dkr.ecr.us-east-1.amazonaws.com/volley:production
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
@@ -42,10 +42,10 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: metric
+    app: volley
     component: web
     layer: application
-  name: metric-web
+  name: volley-web
   namespace: default
 spec:
   ports:
@@ -53,7 +53,7 @@ spec:
     protocol: TCP
     targetPort: 8080
   selector:
-    app: metric
+    app: volley
     component: web
     layer: application
   type: LoadBalancer

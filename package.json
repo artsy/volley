@@ -1,9 +1,9 @@
 {
-  "name": "metric",
+  "name": "volley",
   "version": "1.0.0",
   "description": "Forward client-side metrics to Datadog",
   "main": "src/index.js",
-  "repository": "https://github.com/artsy/metric",
+  "repository": "https://github.com/artsy/volley",
   "author": "Alan Johnson",
   "scripts": {
     "start": "node index.js",

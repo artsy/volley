@@ -4,7 +4,7 @@ jobs:
   test:
     docker:
       - image: artsy/hokusai:0.4.0
-    working_directory: ~/metric
+    working_directory: ~/volley
     steps:
       - add_ssh_keys
       - checkout
