@@ -1,0 +1,53 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: metric-web
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: metric
+        component: web
+        layer: application
+      name: metric-web
+      namespace: default
+    spec:
+      containers:
+      - name: metric-web
+        env:
+        - name: NODE_ENV
+          value: production
+        envFrom:
+        - configMapRef:
+            name: metric-environment
+        image: 585031190124.dkr.ecr.us-east-1.amazonaws.com/metric:staging
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: metric
+    component: web
+    layer: application
+  name: metric-web
+  namespace: default
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: metric
+    component: web
+    layer: application
+  type: LoadBalancer

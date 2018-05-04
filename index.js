@@ -9,8 +9,8 @@ const {
   METRIC_TAG_WHITELIST = null,
   NODE_ENV = 'development',
   PORT = 5500,
-  STATSD_HOST,
-  STATSD_PORT,
+  STATSD_HOST = 'localhost',
+  STATSD_PORT = 8125,
 } = process.env
 
 const app = new Koa()
@@ -136,3 +136,5 @@ router
 app.use(koaBody())
 app.use(router.routes())
 app.listen(PORT)
+
+console.log(`Listening on port ${PORT}`)

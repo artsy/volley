@@ -1,0 +1,10 @@
+---
+version: '2'
+services:
+  metric:
+    command: 
+    environment:
+    - NODE_ENV=test
+    extends:
+      file: common.yml
+      service: metric
