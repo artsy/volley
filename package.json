@@ -2,11 +2,12 @@
   "name": "metric",
   "version": "1.0.0",
   "description": "Forward client-side metrics to Datadog",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": "https://github.com/artsy/metric",
   "author": "Alan Johnson",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "mocha"
   },
   "license": "MIT",
   "private": true,
@@ -27,5 +28,9 @@
       "prettier --write --single-quote --print-width 80 --no-semi",
       "git add"
     ]
+  },
+  "devDependencies": {
+    "mocha": "^5.1.1",
+    "sinon": "^5.0.3"
   }
 }

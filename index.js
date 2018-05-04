@@ -2,6 +2,7 @@ const Koa = require('koa')
 const router = require('koa-router')()
 const koaBody = require('koa-body')
 const { StatsD } = require('node-dogstatsd')
+const initializePostMetric = require('./src/postMetric')
 
 const {
   DEBUG = 'false',
@@ -39,88 +40,11 @@ if (DEBUG === 'true') {
   })
 }
 
-function postMetric(serviceName, metricData) {
-  if (
-    METRIC_NAME_WHITELIST &&
-    !METRIC_NAME_WHITELIST.includes(metricData.name)
-  ) {
-    console.error(`Metric name "${metricData.name}" not in white list.`)
-  } else if (
-    METRIC_TAG_WHITELIST &&
-    metricData.tags.some(tag => !METRIC_TAG_WHITELIST.includes(tag))
-  ) {
-    console.error(
-      `Metric tags "${metricData.tags}" has tags not in white list.`
-    )
-  } else {
-    const metricName = `${serviceName}.${metricData.name}`
-
-    switch (metricData.type) {
-      case 'timing':
-        statsdClient.timing(
-          metricName,
-          metricData.timing,
-          metricData.sampleRate,
-          metricData.tags
-        )
-        break
-
-      case 'increment':
-        statsdClient.increment(
-          metricName,
-          metricData.sampleRate,
-          metricData.tags
-        )
-        break
-
-      case 'incrementBy':
-        statsdClient.incrementBy(metricName, metricData.value, metricData.tags)
-        break
-
-      case 'decrement':
-        statsdClient.decrement(
-          metricName,
-          metricData.sampleRate,
-          metricData.tags
-        )
-        break
-
-      case 'decrementBy':
-        statsdClient.decrementBy(metricName, metricData.value, metricData.tags)
-        break
-
-      case 'gauge':
-        statsdClient.gauge(
-          metricName,
-          metricData.value,
-          metricData.sampleRate,
-          metricData.tags
-        )
-        break
-
-      case 'histogram':
-        statsdClient.histogram(
-          metricName,
-          metricData.value,
-          metricData.sampleRate,
-          metricData.tags
-        )
-        break
-
-      case 'set':
-        statsdClient.set(
-          metricName,
-          metricData.value,
-          metricData.sampleRate,
-          metricData.tags
-        )
-        break
-
-      default:
-        console.error(`Unrecognized metric type: "${metricData.type}".`)
-    }
-  }
-}
+const postMetric = initializePostMetric(
+  statsdClient,
+  METRIC_NAME_WHITELIST,
+  METRIC_TAG_WHITELIST
+)
 
 router
   .get('/health', async ctx => {
