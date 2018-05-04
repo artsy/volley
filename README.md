@@ -61,59 +61,59 @@ The following payload demonstrates the format of all possible metric types:
 
 ```javascript
 {
-	"serviceName": "client-service",
-	"metrics": [
-		{
-			"type": "timer",
-			"name": "elapsed-time",  
-			"value": 12345,
-			"tags": ["tag-name:tag-arg"]
-		},
-		{
-			"type": "increment",
-			"name": "count",  
-			"sampleRate": 1, // optional; defaults to 1
-			"tags": ["tag-name:tag-arg"]
-		},
-		{
-			"type": "incrementBy",
-			"name": "count",  
-			"value": 5,
-			"tags": ["tag-name:tag-arg"]
-		},
-		{
-			"type": "decrement",
-			"name": "count",  
-			"sampleRate": 3, // optional; defaults to 1
-			"tags": ["tag-name:tag-arg"]
-		},
-		{
-			"type": "decrementBy",
-			"name": "count",  
-			"value": 3,
-			"tags": ["tag-name:tag-arg"]
-		},
-		{
-			"type": "gauge",
+  "serviceName": "client-service",
+  "metrics": [
+    {
+      "type": "timer",
+      "name": "elapsed-time",  
+      "value": 12345,
+      "tags": ["tag-name:tag-arg"]
+    },
+    {
+      "type": "increment",
+      "name": "count",  
+      "sampleRate": 1, // optional; defaults to 1
+      "tags": ["tag-name:tag-arg"]
+    },
+    {
+      "type": "incrementBy",
+      "name": "count",  
+      "value": 5,
+      "tags": ["tag-name:tag-arg"]
+    },
+    {
+      "type": "decrement",
+      "name": "count",  
+      "sampleRate": 3, // optional; defaults to 1
+      "tags": ["tag-name:tag-arg"]
+    },
+    {
+      "type": "decrementBy",
+      "name": "count",  
+      "value": 3,
+      "tags": ["tag-name:tag-arg"]
+    },
+    {
+      "type": "gauge",
       "name": "stat",  
       "sampleRate": 2,  // optional; defaults to 1
-			"value": 12345,
-			"tags": ["tag-name:tag-arg"]
-		},
-		{
-			"type": "histogram",
-			"name": "stat",  
+      "value": 12345,
+      "tags": ["tag-name:tag-arg"]
+    },
+    {
+      "type": "histogram",
+      "name": "stat",  
       "value": 4567,
       "sampleRate": 6,
-			"tags": ["tag-name:tag-arg"]
-		},
-		{
-			"type": "set",
-			"name": "tracked-items",  
-			"value": "item",
-			"tags": ["tag-name:tag-arg"]
-		}
-	]
+      "tags": ["tag-name:tag-arg"]
+    },
+    {
+      "type": "set",
+      "name": "tracked-items",  
+      "value": "item",
+      "tags": ["tag-name:tag-arg"]
+    }
+  ]
 }
 ```
 

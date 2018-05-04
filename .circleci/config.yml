@@ -3,7 +3,7 @@ version: 2
 jobs:
   test:
     docker:
-      - image: artsy/hokusai:0.4.0
+      - image: artsy/hokusai:0.4.3
     working_directory: ~/volley
     steps:
       - add_ssh_keys
@@ -12,9 +12,9 @@ jobs:
       - run:
           name: Test
           command: hokusai test
-  push:
+  deploy:
     docker:
-      - image: artsy/hokusai:0.4.0
+      - image: artsy/hokusai:0.4.3
     steps:
       - add_ssh_keys
       - checkout
@@ -22,12 +22,6 @@ jobs:
       - run:
           name: Push
           command: hokusai registry push --tag $CIRCLE_SHA1 --force --overwrite
-  deploy:
-    docker:
-      - image: artsy/hokusai:0.4.0
-    steps:
-      - add_ssh_keys
-      - checkout
       - run:
           name: Configure
           command: hokusai configure --kubectl-version 1.6.3 --s3-bucket artsy-citadel --s3-key k8s/config --platform linux
@@ -40,15 +34,9 @@ workflows:
   default:
     jobs:
       - test
-      - push:
-          filters:
-            branches:
-              only: master
-          requires:
-            - test
       - deploy:
           filters:
             branches:
               only: master
           requires:
-            - push
+            - test
