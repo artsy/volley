@@ -15,18 +15,16 @@ jobs:
   deploy:
     docker:
       - image: artsy/hokusai:0.4.3
-    environment:
-      - AWS_DEFAULT_REGION: us-east-1
     steps:
       - add_ssh_keys
       - checkout
       - setup_remote_docker
       - run:
-          name: Configure
-          command: hokusai configure --kubectl-version 1.6.3 --s3-bucket artsy-citadel --s3-key k8s/config --platform linux
-      - run:
           name: Push
           command: hokusai registry push --tag $CIRCLE_SHA1 --force --overwrite
+      - run:
+          name: Configure
+          command: hokusai configure --kubectl-version 1.6.3 --s3-bucket artsy-citadel --s3-key k8s/config --platform linux
       - run:
           name: Deploy
           command: hokusai staging deploy $CIRCLE_SHA1
