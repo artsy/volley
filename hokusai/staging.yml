@@ -20,8 +20,7 @@ spec:
       namespace: default
     spec:
       containers:
-      - name: volley-web
-        env:
+      - env:
         - name: NODE_ENV
           value: production
         - name: PORT
@@ -35,6 +34,7 @@ spec:
             name: volley-environment
         image: 585031190124.dkr.ecr.us-east-1.amazonaws.com/volley:staging
         imagePullPolicy: Always
+        name: volley-web
         ports:
         - containerPort: 8080
 ---
