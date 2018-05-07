@@ -24,11 +24,11 @@ spec:
         - name: NODE_ENV
           value: production
         - name: PORT
-          value: 8080
+          value: "8080"
         - name: STATSD_HOST
           value: datadog
         - name: STATSD_PORT
-          value: 8125
+          value: "8125"
         envFrom:
         - configMapRef:
             name: volley-environment
