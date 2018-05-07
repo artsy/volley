@@ -48,13 +48,13 @@ const postMetric = initializePostMetric(
 
 router
   .get('/health', async ctx => {
-    ctx.render('OK')
+    ctx.body = 'OK'
   })
   .post('/report', async ctx => {
     const { serviceName, metrics } = ctx.request.body
     metrics.forEach(metricData => postMetric(serviceName, metricData))
-    ctx.response.status = 202
-    ctx.response.body = 'OK'
+    ctx.status = 202
+    ctx.body = 'OK'
   })
 
 app.use(koaBody())
