@@ -6,9 +6,9 @@ const initializePostMetric = require('./src/postMetric')
 
 const {
   DEBUG = 'false',
+  GLOBAL_TAGS = '',
   METRIC_NAME_WHITELIST = null,
   METRIC_TAG_WHITELIST = null,
-  NODE_ENV = 'development',
   PORT = 5500,
   STATSD_HOST = 'localhost',
   STATSD_PORT = 8125,
@@ -16,7 +16,7 @@ const {
 
 const app = new Koa()
 
-const globalTags = [`env:${NODE_ENV}`]
+const globalTags = GLOBAL_TAGS.split(',')
 
 let statsdClient
 if (DEBUG === 'true') {
