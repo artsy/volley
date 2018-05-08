@@ -15,7 +15,7 @@ Datadog Agent proxy service for client-side metrics collection.
 
 ## Summary
 
-Metric is a thin HTTP wrapper for [node-dogstatsd](https://github.com/mrbar42/node-dogstatsd). It receives metric data from browser applications and forwards it to a Datadog Agent, which in turn handles collection of volleys from multiple sources into Datadog.
+Metric is a thin HTTP wrapper for [node-dogstatsd](https://github.com/mrbar42/node-dogstatsd). It receives metric data from browser applications and forwards it to a Datadog Agent, which in turn handles collection of metrics from multiple sources into Datadog.
 
 ## Development
 
@@ -40,14 +40,18 @@ That will build a Docker container with the app's dependencies. You can also run
 
 ### Whitelists
 
-Because Datadog plans have an allotment of custom volleys and tags, Metric offers the ability to restrict possible values for volley names and tags that are allowed. The whitelists are managed by environment variables.
+Because Datadog plans have an allotment of custom metrics and tags, Metric offers the ability to restrict possible values for metric names and tags that are allowed. The whitelists are managed by environment variables.
 
 * Get the current METRIC_NAME_WHITELIST with `hokusai staging env get METRIC_NAME_WHITELIST`
 * Set its new value with `hokusai staging env set METRIC_NAME_WHITELIST=preexisting-tag:value,new-tag:new-value`
 * Refresh the environment with `hokusai staging deployment refresh`
 * Do the same thing in `production` when you're satisfied.
 
-### Publishing volleys
+### Global tags
+
+The Datadog Agent is already configured to send an `env` tag with all metrics it publishes. If you want to add additional global tags, set the `GLOBAL_TAGS` environment variable to a comma-separated list of tags with the process mentioned in the previous section.
+
+### Publishing metrics
 
 From a client application, make a POST request to the `/report` endpoint. Example:
 
@@ -55,7 +59,7 @@ From a client application, make a POST request to the `/report` endpoint. Exampl
 // TODO
 ```
 
-You may push multiple volleys in one payload. In all situations, Metric will respond with status code 202 and the text "OK", so watch Datadog for metrics appearing and [Metric's logs]() for errors.
+You may push multiple metrics in one payload. In all situations, Metric will respond with status code 202 and the text "OK", so watch Datadog for metrics appearing and [Metric's logs]() for errors.
 
 The following payload demonstrates the format of all possible metric types:
 
