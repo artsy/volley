@@ -1,4 +1,5 @@
 const Koa = require('koa')
+const cors = require('@koa/cors')
 const router = require('koa-router')()
 const koaBody = require('koa-body')
 const { StatsD } = require('node-dogstatsd')
@@ -16,7 +17,7 @@ const {
 
 const app = new Koa()
 
-const globalTags = GLOBAL_TAGS.split(',')
+const globalTags = GLOBAL_TAGS && GLOBAL_TAGS.split(',')
 
 let statsdClient
 if (DEBUG === 'true') {
@@ -57,6 +58,7 @@ router
     ctx.body = 'OK'
   })
 
+app.use(cors())
 app.use(koaBody())
 app.use(router.routes())
 app.listen(PORT)
