@@ -1,13 +1,11 @@
-FROM node:latest
-
-# Install packages
-RUN apt-get update -qq && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+FROM node:10-alpine
 
 # Set up deploy user
-RUN adduser --disabled-password --gecos '' deploy
+RUN adduser -D -g '' deploy
 
 # Set up working directory
-RUN mkdir /app
+RUN mkdir -p /app
+RUN chown deploy:deploy /app
 
 RUN npm install -g yarn
 
@@ -22,9 +20,8 @@ RUN mv /tmp/node_modules /app/
 # Finally, add the rest of our app's code
 # (this is done at the end so that changes to our app's code
 # don't bust Docker's cache)
-ADD . /app
 WORKDIR /app
-RUN chown -R deploy:deploy /app
+ADD --chown=deploy:deploy . /app
 
 # Switch to deploy user
 USER deploy

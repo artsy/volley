@@ -6,5 +6,5 @@ services:
     environment:
       - NODE_ENV=test
     extends:
-      file: common.yml
+      file: build.yml
       service: volley

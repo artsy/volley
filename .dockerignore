@@ -1,5 +1,8 @@
 .git
 .gitignore
+.dockerignore
+Dockerfile
+hokusai
 
 README.md
 LICENSE
@@ -14,3 +17,6 @@ VERSION
 log
 tmp
 node_modules
+npm-debug.log
+.vscode
+.circleci
