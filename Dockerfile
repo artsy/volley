@@ -10,17 +10,16 @@ RUN chmod +x /usr/local/bin/dumb-init
 
 # Set up working directory
 RUN mkdir -p /app
-RUN chown deploy:deploy /app
-
-RUN npm install -g yarn
 
 # Set up node modules
+RUN npm install -g yarn
 WORKDIR /tmp
 ADD package.json package.json
 ADD yarn.lock yarn.lock
 RUN chmod u+x /usr/local/bin/yarn
 RUN yarn install && yarn cache clean
 RUN mv /tmp/node_modules /app/
+RUN chown deploy:deploy /app
 
 # Finally, add the rest of our app's code
 # (this is done at the end so that changes to our app's code
