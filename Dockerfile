@@ -3,6 +3,11 @@ FROM node:10-alpine
 # Set up deploy user
 RUN adduser -D -g '' deploy
 
+# Set up dumb-init
+ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64 /usr/local/bin/dumb-init
+RUN chown deploy:deploy /usr/local/bin/dumb-init
+RUN chmod +x /usr/local/bin/dumb-init
+
 # Set up working directory
 RUN mkdir -p /app
 RUN chown deploy:deploy /app
@@ -31,4 +36,5 @@ ENV HOME /home/deploy
 ENV PORT 8080
 EXPOSE 8080
 
+ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
 CMD node index.js
