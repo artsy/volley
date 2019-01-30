@@ -4,9 +4,9 @@ services:
   volley:
     command: node index.js
     environment:
-    - NODE_ENV=development
-    - PORT=5500
-    - STATSD_HOST=docker.for.mac.localhost
+      - NODE_ENV=development
+      - PORT=5500
+      - STATSD_HOST=docker.for.mac.localhost
     extends:
       file: common.yml
       service: volley

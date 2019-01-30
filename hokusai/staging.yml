@@ -20,28 +20,35 @@ spec:
       namespace: default
     spec:
       containers:
-      - env:
-        - name: NODE_ENV
-          value: production
-        - name: PORT
-          value: "8080"
-        - name: STATSD_HOST
-          value: datadog
-        - name: STATSD_PORT
-          value: "8125"
-        envFrom:
-        - configMapRef:
-            name: volley-environment
-        image: 585031190124.dkr.ecr.us-east-1.amazonaws.com/volley:staging
-        imagePullPolicy: Always
-        name: volley-web
-        ports:
-        - containerPort: 8080
+        - env:
+          - name: NODE_ENV
+            value: production
+          - name: PORT
+            value: "8080"
+          - name: STATSD_HOST
+            value: datadog
+          - name: STATSD_PORT
+            value: "8125"
+          envFrom:
+            - configMapRef:
+                name: volley-environment
+          image: 585031190124.dkr.ecr.us-east-1.amazonaws.com/volley:staging
+          imagePullPolicy: Always
+          name: volley-web
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
       dnsPolicy: ClusterFirst
       dnsConfig:
         options:
-        - name: ndots
-          value: "1"
+          - name: ndots
+            value: "1"
 
 ---
 apiVersion: v1
@@ -61,14 +68,14 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-connection-draining-enabled: "true"
 spec:
   ports:
-  - port: 443
-    protocol: TCP
-    name: https
-    targetPort: 8080
-  - port: 80
-    protocol: TCP
-    name: http
-    targetPort: 8080
+    - port: 443
+      protocol: TCP
+      name: https
+      targetPort: 8080
+    - port: 80
+      protocol: TCP
+      name: http
+      targetPort: 8080
   selector:
     app: volley
     component: web

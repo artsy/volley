@@ -4,7 +4,7 @@ services:
   volley:
     command: node node_modules/.bin/mocha
     environment:
-    - NODE_ENV=test
+      - NODE_ENV=test
     extends:
       file: common.yml
       service: volley

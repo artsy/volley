@@ -16,7 +16,7 @@ WORKDIR /tmp
 ADD package.json package.json
 ADD yarn.lock yarn.lock
 RUN chmod u+x /usr/local/bin/yarn
-RUN yarn install
+RUN yarn install && yarn cache clean
 RUN mv /tmp/node_modules /app/
 
 # Finally, add the rest of our app's code
