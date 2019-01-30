@@ -1,2 +1,4 @@
 ---
 project-name: volley
+git-remote: git@github.com:artsy/volley.git
+hokusai-required-version: ~=0.5.0
