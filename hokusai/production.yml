@@ -21,12 +21,10 @@ spec:
     spec:
       containers:
         - env:
-          - name: NODE_ENV
-            value: production
-          - name: PORT
-            value: "8080"
           - name: STATSD_HOST
-            value: datadog
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
           - name: STATSD_PORT
             value: "8125"
           envFrom:
