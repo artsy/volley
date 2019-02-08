@@ -22,9 +22,9 @@ spec:
       containers:
         - env:
           - name: STATSD_HOST
-              valueFrom:
-                fieldRef:
-                  fieldPath: spec.nodeName
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
           - name: STATSD_PORT
             value: "8125"
           envFrom:
