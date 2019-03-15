@@ -35,6 +35,13 @@ spec:
           name: volley-web
           ports:
             - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /health
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 10
           resources:
             requests:
               cpu: 100m
