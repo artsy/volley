@@ -4,6 +4,9 @@ const router = require('koa-router')()
 const koaBody = require('koa-body')
 const { StatsD } = require('node-dogstatsd')
 const initializePostMetric = require('./src/postMetric')
+const path = require('path')
+const fs = require('fs')
+const tracker = fs.readFileSync(path.join(__dirname, 'assets', 'pixel.png'))
 
 const {
   DEBUG = 'false',
@@ -56,6 +59,22 @@ router
     metrics.forEach(metricData => postMetric(serviceName, metricData))
     ctx.status = 202
     ctx.body = 'OK'
+  })
+  .get('/cloudflareError.png', async ctx => {
+    if (ctx.query['type'] == undefined || ctx.query['ray-id'] == undefined || ctx.query['client-ip'] == undefined) {
+      ctx.status = 404
+    }
+    else {
+      postMetric("volley", {
+        "type": "increment",
+        "name": "cloudflareError",
+        "sampleRate": 1,
+        "tags": ["type:" + ctx.query['type']]
+      })
+      console.log('Cloudflare Error -- Type: ' + ctx.query['type'] + ' -- Ray ID: ' + ctx.query['ray-id'] + ' -- Client IP: ' + ctx.query['client-ip'])
+      ctx.type = 'image/png'
+      ctx.body = tracker
+    }
   })
 
 app.use(cors())
