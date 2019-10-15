@@ -3,6 +3,7 @@ const cors = require('@koa/cors')
 const router = require('koa-router')()
 const koaBody = require('koa-body')
 const { StatsD } = require('node-dogstatsd')
+const ipAddress = require('ip-address').Address4
 const initializePostMetric = require('./src/postMetric')
 const path = require('path')
 const fs = require('fs')
@@ -21,6 +22,18 @@ const {
 const app = new Koa()
 
 const globalTags = GLOBAL_TAGS && GLOBAL_TAGS.split(',')
+
+var metricNameWhitelist = ['cloudflareError']
+if (METRIC_NAME_WHITELIST) {
+  metricNameWhitelist = metricNameWhitelist.concat(METRIC_NAME_WHITELIST.split(','))
+}
+
+var metricTagWhitelist = ['cloudflareErrorType:500', 'cloudflareErrorType:1000']
+if (METRIC_TAG_WHITELIST) {
+  metricTagWhitelist = metricTagWhitelist.concat(METRIC_TAG_WHITELIST.split(','))
+}
+
+const rayIDRegex = /^\w{16}$/
 
 let statsdClient
 if (DEBUG === 'true') {
@@ -46,8 +59,8 @@ if (DEBUG === 'true') {
 
 const postMetric = initializePostMetric(
   statsdClient,
-  METRIC_NAME_WHITELIST,
-  METRIC_TAG_WHITELIST
+  metricNameWhitelist,
+  metricTagWhitelist
 )
 
 router
@@ -61,7 +74,19 @@ router
     ctx.body = 'OK'
   })
   .get('/cloudflareError.png', async ctx => {
-    if (ctx.query['type'] == undefined || ctx.query['ray-id'] == undefined || ctx.query['client-ip'] == undefined) {
+    if (ctx.query['cloudflareErrorType'] == undefined || ctx.query['rayID'] == undefined || ctx.query['clientIP'] == undefined) {
+      ctx.status = 404
+    }
+    else if (!['500', '1000'].includes(ctx.query['cloudflareErrorType'])) {
+      console.error('Unregistered error type')
+      ctx.status = 404
+    }
+    else if (!rayIDRegex.test(ctx.query['rayID'])) {
+      console.error('Invalid Ray ID')
+      ctx.status = 404
+    }
+    else if (!new ipAddress(ctx.query['clientIP']).isValid()) {
+      console.error('Invalid client IP')
       ctx.status = 404
     }
     else {
@@ -69,9 +94,9 @@ router
         "type": "increment",
         "name": "cloudflareError",
         "sampleRate": 1,
-        "tags": ["type:" + ctx.query['type']]
+        "tags": ["cloudflareErrorType:" + ctx.query['cloudflareErrorType']]
       })
-      console.log('Cloudflare Error -- Type: ' + ctx.query['type'] + ' -- Ray ID: ' + ctx.query['ray-id'] + ' -- Client IP: ' + ctx.query['client-ip'])
+      console.log('Cloudflare Error -- Type: ' + ctx.query['cloudflareErrorType'] + ' -- Ray ID: ' + ctx.query['rayID'] + ' -- Client IP: ' + ctx.query['clientIP'])
       ctx.type = 'image/png'
       ctx.body = tracker
     }
