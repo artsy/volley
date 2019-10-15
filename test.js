@@ -4,18 +4,18 @@ const request = require('supertest')
 const server = require('./index')
 const initializePostMetric = require('./src/postMetric')
 
-describe("server routes", () => {
+describe("the server's reporting capabilities", () => {
   afterEach(() => {
     server.close()
   })
 
-  it("/health should respond with 200 OK", async () => {
+  it("responds that the server is healthy", async () => {
     const response = await request(server).get("/health")
     assert(response.status === 200)
     assert(response.text === 'OK')
   })
 
-  it("/report should respond with 202 OK", async () => {
+  it("reports a given metric", async () => {
     let payload = {
       "serviceName": "my-service",
       "metrics": [
@@ -32,31 +32,32 @@ describe("server routes", () => {
     assert(response.text === 'OK')
   })
 
-  it("/cloudflareError.png should respond with 404 if required parameters missing", async () => {
-    const response = await request(server).get("/cloudflareError.png")
-    assert(response.status === 404)
-  })
+  describe("concerning the cloud flare error route", () => {
+    it("responds with 404 if required parameters missing", async () => {
+      const response = await request(server).get("/cloudflareError.png")
+      assert(response.status === 404)
+    })
 
-  it("/cloudflareError.png should respond with 404 if invalid cloudflareErrorType", async () => {
-    const response = await request(server).get("/cloudflareError.png?cloudflareErrorType=100").query({ cloudflareErrorType: '100', rayID: '1jud78flight87gh', clientIP: '127.0.0.1' })
-    assert(response.status === 404)
-  })
+    it("responds with 404 if invalid cloudflareErrorType", async () => {
+      const response = await request(server).get("/cloudflareError.png?cloudflareErrorType=100").query({ cloudflareErrorType: '100', rayID: '1jud78flight87gh', clientIP: '127.0.0.1' })
+      assert(response.status === 404)
+    })
 
-  it("/cloudflareError.png should respond with 404 if invalid RayID", async () => {
-    const response = await request(server).get("/cloudflareError.png").query({ cloudflareErrorType: '100', rayID: 'foo', clientIP: '127.0.0.1' })
-    assert(response.status === 404)
-  })
+    it("responds with 404 if invalid RayID", async () => {
+      const response = await request(server).get("/cloudflareError.png").query({ cloudflareErrorType: '100', rayID: 'foo', clientIP: '127.0.0.1' })
+      assert(response.status === 404)
+    })
 
-  it("/cloudflareError.png should respond with 404 if invalid clientIP", async () => {
-    const response = await request(server).get("/cloudflareError.png").query({ cloudflareErrorType: '100', rayID: '1jud78flight87gh', clientIP: 'bar' })
-    assert(response.status === 404)
-  })
+    it("responds with 404 if invalid clientIP", async () => {
+      const response = await request(server).get("/cloudflareError.png").query({ cloudflareErrorType: '100', rayID: '1jud78flight87gh', clientIP: 'bar' })
+      assert(response.status === 404)
+    })
 
-  it("/cloudflareError.png should respond with 200 if called with valid parameters", async () => {
-    const response = await request(server).get("/cloudflareError.png").query({ cloudflareErrorType: '500', rayID: '1jud78flight87gh', clientIP: '127.0.0.1' })
-    assert(response.status === 200)
+    it("responds with 200 if called with valid parameters", async () => {
+      const response = await request(server).get("/cloudflareError.png").query({ cloudflareErrorType: '500', rayID: '1jud78flight87gh', clientIP: '127.0.0.1' })
+      assert(response.status === 200)
+    })
   })
-
 })
 
 describe('postMetric', () => {

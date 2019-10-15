@@ -33,7 +33,8 @@ if (METRIC_TAG_WHITELIST) {
   metricTagWhitelist = metricTagWhitelist.concat(METRIC_TAG_WHITELIST.split(','))
 }
 
-const rayIDRegex = /^\w{16}$/
+const validCloudFlareErrorTypes = ['500', '1000']
+const rayIDLen = 16
 
 let statsdClient
 if (DEBUG === 'true') {
@@ -74,20 +75,20 @@ router
     ctx.body = 'OK'
   })
   .get('/cloudflareError.png', async ctx => {
-    if (ctx.query['cloudflareErrorType'] == undefined || ctx.query['rayID'] == undefined || ctx.query['clientIP'] == undefined) {
+    if (!('cloudflareErrorType' in ctx.query) || !('rayID' in ctx.query) || !('clientIP' in ctx.query)) {
       console.error('Missing required parameters')
       ctx.status = 404
     }
-    else if (!['500', '1000'].includes(ctx.query['cloudflareErrorType'])) {
-      console.error('Unregistered error type')
+    else if (!validCloudFlareErrorTypes.includes(ctx.query['cloudflareErrorType'])) {
+      console.error(`Unregistered error type ${ctx.query['cloudflareErrorType']}`)
       ctx.status = 404
     }
-    else if (!rayIDRegex.test(ctx.query['rayID'])) {
-      console.error('Invalid Ray ID')
+    else if (ctx.query['rayID'].length != rayIDLen) {
+      console.error(`Invalid Ray ID ${ctx.query['rayID']}`)
       ctx.status = 404
     }
     else if (!new ipAddress(ctx.query['clientIP']).isValid()) {
-      console.error('Invalid client IP')
+      console.error(`Invalid client IP ${ctx.query['clientIP']}`)
       ctx.status = 404
     }
     else {
@@ -97,7 +98,7 @@ router
         "sampleRate": 1,
         "tags": ["cloudflareErrorType:" + ctx.query['cloudflareErrorType']]
       })
-      console.log('Cloudflare Error -- Type: ' + ctx.query['cloudflareErrorType'] + ' -- Ray ID: ' + ctx.query['rayID'] + ' -- Client IP: ' + ctx.query['clientIP'])
+      console.log(`Cloudflare Error -- Type: ${ctx.query['cloudflareErrorType']} -- Ray ID: ${ctx.query['rayID']} -- Client IP: ${ctx.query['clientIP']}`)
       ctx.type = 'image/png'
       ctx.body = tracker
     }
