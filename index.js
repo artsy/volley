@@ -23,7 +23,7 @@ const app = new Koa()
 
 const globalTags = GLOBAL_TAGS && GLOBAL_TAGS.split(',')
 
-var metricNameWhitelist = ['cloudflareError']
+let metricNameWhitelist = ['cloudflareError']
 if (METRIC_NAME_WHITELIST) {
   metricNameWhitelist = metricNameWhitelist.concat(METRIC_NAME_WHITELIST.split(','))
 }
