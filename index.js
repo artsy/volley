@@ -75,6 +75,7 @@ router
   })
   .get('/cloudflareError.png', async ctx => {
     if (ctx.query['cloudflareErrorType'] == undefined || ctx.query['rayID'] == undefined || ctx.query['clientIP'] == undefined) {
+      console.error('Missing required parameters')
       ctx.status = 404
     }
     else if (!['500', '1000'].includes(ctx.query['cloudflareErrorType'])) {
@@ -105,6 +106,7 @@ router
 app.use(cors())
 app.use(koaBody())
 app.use(router.routes())
-app.listen(PORT)
+
+module.exports = app.listen(PORT)
 
 console.log(`Listening on port ${PORT}`)
