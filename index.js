@@ -28,7 +28,7 @@ if (METRIC_NAME_WHITELIST) {
   metricNameWhitelist = metricNameWhitelist.concat(METRIC_NAME_WHITELIST.split(','))
 }
 
-var metricTagWhitelist = ['cloudflareErrorType:500', 'cloudflareErrorType:1000']
+let metricTagWhitelist = ['cloudflareErrorType:500', 'cloudflareErrorType:1000']
 if (METRIC_TAG_WHITELIST) {
   metricTagWhitelist = metricTagWhitelist.concat(METRIC_TAG_WHITELIST.split(','))
 }
