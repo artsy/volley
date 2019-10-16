@@ -4,10 +4,10 @@ module.exports = function initialize(
   metricTagWhitelist
 ) {
   return function postMetric(serviceName, metricData) {
-    if (metricNameWhitelist && !metricNameWhitelist.includes(metricData.name)) {
+    if (metricNameWhitelist.length && !metricNameWhitelist.includes(metricData.name)) {
       console.error(`Metric name "${metricData.name}" not in white list.`)
     } else if (
-      metricTagWhitelist &&
+      metricTagWhitelist.length &&
       metricData.tags &&
       metricData.tags.some(tag => !metricTagWhitelist.includes(tag))
     ) {
@@ -16,7 +16,7 @@ module.exports = function initialize(
       )
     } else if (
       (!metricData.tags || !metricData.tags.length) &&
-      metricTagWhitelist &&
+      metricTagWhitelist.length &&
       !metricTagWhitelist.includes('_')
     ) {
       console.error(
