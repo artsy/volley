@@ -3,7 +3,11 @@ const cors = require('@koa/cors')
 const router = require('koa-router')()
 const koaBody = require('koa-body')
 const { StatsD } = require('node-dogstatsd')
+const ipAddress = require('ip-address').Address4
 const initializePostMetric = require('./src/postMetric')
+const path = require('path')
+const fs = require('fs')
+const tracker = fs.readFileSync(path.join(__dirname, 'assets', 'pixel.png'))
 
 const {
   DEBUG = 'false',
@@ -18,6 +22,19 @@ const {
 const app = new Koa()
 
 const globalTags = GLOBAL_TAGS && GLOBAL_TAGS.split(',')
+
+let metricNameWhitelist = ['cloudflareError']
+if (METRIC_NAME_WHITELIST) {
+  metricNameWhitelist = metricNameWhitelist.concat(METRIC_NAME_WHITELIST.split(','))
+}
+
+let metricTagWhitelist = ['cloudflareErrorType:500', 'cloudflareErrorType:1000']
+if (METRIC_TAG_WHITELIST) {
+  metricTagWhitelist = metricTagWhitelist.concat(METRIC_TAG_WHITELIST.split(','))
+}
+
+const validCloudFlareErrorTypes = ['500', '1000']
+const rayIDLen = 16
 
 let statsdClient
 if (DEBUG === 'true') {
@@ -43,8 +60,8 @@ if (DEBUG === 'true') {
 
 const postMetric = initializePostMetric(
   statsdClient,
-  METRIC_NAME_WHITELIST,
-  METRIC_TAG_WHITELIST
+  metricNameWhitelist,
+  metricTagWhitelist
 )
 
 router
@@ -57,10 +74,40 @@ router
     ctx.status = 202
     ctx.body = 'OK'
   })
+  .get('/cloudflareError.png', async ctx => {
+    if (!('cloudflareErrorType' in ctx.query) || !('rayID' in ctx.query) || !('clientIP' in ctx.query)) {
+      console.error('Missing required parameters')
+      ctx.status = 404
+    }
+    else if (!validCloudFlareErrorTypes.includes(ctx.query['cloudflareErrorType'])) {
+      console.error(`Unregistered error type ${ctx.query['cloudflareErrorType']}`)
+      ctx.status = 404
+    }
+    else if (ctx.query['rayID'].length != rayIDLen) {
+      console.error(`Invalid Ray ID ${ctx.query['rayID']}`)
+      ctx.status = 404
+    }
+    else if (!new ipAddress(ctx.query['clientIP']).isValid()) {
+      console.error(`Invalid client IP ${ctx.query['clientIP']}`)
+      ctx.status = 404
+    }
+    else {
+      postMetric("volley", {
+        "type": "increment",
+        "name": "cloudflareError",
+        "sampleRate": 1,
+        "tags": ["cloudflareErrorType:" + ctx.query['cloudflareErrorType']]
+      })
+      console.log(`Cloudflare Error -- Type: ${ctx.query['cloudflareErrorType']} -- Ray ID: ${ctx.query['rayID']} -- Client IP: ${ctx.query['clientIP']}`)
+      ctx.type = 'image/png'
+      ctx.body = tracker
+    }
+  })
 
 app.use(cors())
 app.use(koaBody())
 app.use(router.routes())
-app.listen(PORT)
+
+module.exports = app.listen(PORT)
 
 console.log(`Listening on port ${PORT}`)
