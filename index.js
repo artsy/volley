@@ -3,7 +3,7 @@ const cors = require('@koa/cors')
 const router = require('koa-router')()
 const koaBody = require('koa-body')
 const { StatsD } = require('node-dogstatsd')
-const ipAddress = require('ip-address').Address4
+const ipAddress = require('ip-address')
 const initializePostMetric = require('./src/postMetric')
 const path = require('path')
 const fs = require('fs')
@@ -87,7 +87,7 @@ router
       console.error(`Invalid Ray ID ${ctx.query['rayID']}`)
       ctx.status = 404
     }
-    else if (!new ipAddress(ctx.query['clientIP']).isValid()) {
+    else if (!new ipAddress.Address4(ctx.query['clientIP']).isValid() && !new ipAddress.Address6(ctx.query['clientIP']).isValid()) {
       console.error(`Invalid client IP ${ctx.query['clientIP']}`)
       ctx.status = 404
     }
