@@ -42,3 +42,4 @@ workflows:
 
       - hokusai/deploy-production:
           <<: *only_release
+
