@@ -12,12 +12,12 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "@koa/cors": "2",
-    "koa": "^2.5.1",
-    "koa-body": "^2.5.0",
-    "koa-router": "^7.4.0",
-    "node-dogstatsd": "^0.0.7",
-    "ip-address": "^6.1.0"
+    "@koa/cors": "2.2.1",
+    "koa": "2.5.1",
+    "koa-body": "2.5.0",
+    "koa-router": "7.4.0",
+    "node-dogstatsd": "0.0.7",
+    "ip-address": "6.1.0"
   },
   "prettier": {
     "bracketSpacing": true,
@@ -32,8 +32,8 @@
     ]
   },
   "devDependencies": {
-    "mocha": "^5.1.1",
-    "sinon": "^5.0.3",
-    "supertest": "^4.0.2"
+    "mocha": "5.1.1",
+    "sinon": "5.0.3",
+    "supertest": "4.0.2"
   }
 }
