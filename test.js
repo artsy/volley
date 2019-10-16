@@ -79,7 +79,7 @@ describe('postMetric', () => {
 
   describe('with no whitelists', () => {
     beforeEach(() => {
-      postMetric = initializePostMetric(statsdClient, null, null)
+      postMetric = initializePostMetric(statsdClient, [], [])
     })
 
     it('should call statsdClient.histogram when there are no whitelists', () => {
@@ -94,7 +94,7 @@ describe('postMetric', () => {
 
   describe('with a name whitelist containing only "valid-stat"', () => {
     beforeEach(() => {
-      postMetric = initializePostMetric(statsdClient, ['valid-stat'], null)
+      postMetric = initializePostMetric(statsdClient, ['valid-stat'], [])
     })
 
     it('should call statsdClient.histogram for name "valid-stat"', () => {
@@ -118,7 +118,7 @@ describe('postMetric', () => {
 
   describe('with a tag whitelist containing only "valid-tag:valid-value"', () => {
     beforeEach(() => {
-      postMetric = initializePostMetric(statsdClient, null, [
+      postMetric = initializePostMetric(statsdClient, [], [
         'valid-tag:valid-value',
       ])
     })
@@ -155,7 +155,7 @@ describe('postMetric', () => {
 
   describe('with a tag whitelist containing only "_"', () => {
     beforeEach(() => {
-      postMetric = initializePostMetric(statsdClient, null, ['_'])
+      postMetric = initializePostMetric(statsdClient, [], ['_'])
     })
 
     it('should call statsdClient.histogram with no tags', () => {
