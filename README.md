@@ -1,7 +1,4 @@
 # Volley
-
-[![CircleCI](https://circleci.com/gh/artsy/volley.svg?style=svg&circle-token=90026ccf3fbb8fd77ccad45fe6f36f853c36e209)](https://circleci.com/gh/artsy/volley)
-
 Datadog Agent proxy service for client-side metrics collection.
 
 ## Meta
@@ -11,6 +8,7 @@ Datadog Agent proxy service for client-side metrics collection.
 * **Staging:** [http://volley-staging.artsy.net](http://volley-staging.artsy.net)
 * **CI/Deploys:** [CircleCi](https://circleci.com/gh/artsy/volley); merged PRs to `artsy/volley#master` are automatically deployed to staging; PRs from `staging` to `release` are automatically deployed to production. [Start a deploy...](https://github.com/artsy/volley/compare/release...staging?expand=1)
 * **Point People:** [@izakp](https://github.com/izakp)
+[![CircleCI](https://circleci.com/gh/artsy/volley/tree/master.svg?style=svg&circle-token=93f0f535305caf8dc13f6fbc7ff36e9062598937)](https://circleci.com/gh/artsy/volley/tree/master)
 
 ## Summary
 
