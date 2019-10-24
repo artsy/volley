@@ -9,8 +9,7 @@ Datadog Agent proxy service for client-side metrics collection.
 * **State:** Early production
 * **Production:** [http://volley.artsy.net](http://volley.artsy.net)
 * **Staging:** [http://volley-staging.artsy.net](http://volley-staging.artsy.net)
-* **Deploys:** Merges to `master` are auto-deployed to staging. Run `hokusai pipeline promote` to promote staging to production. See the [Hokusai docs](https://github.com/artsy/hokusai/blob/master/docs/Getting_Started.md) for other operational details.
-* **CI**: [Circle CI](https://circleci.com/gh/artsy/volley)
+* **CI/Deploys:** [CircleCi](https://circleci.com/gh/artsy/volley); merged PRs to `artsy/volley#master` are automatically deployed to staging; PRs from `staging` to `release` are automatically deployed to production. [Start a deploy...](https://github.com/artsy/volley/compare/release...staging?expand=1)
 * **Point People:** [@izakp](https://github.com/izakp)
 
 ## Summary
