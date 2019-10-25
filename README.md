@@ -13,7 +13,7 @@ Datadog Agent proxy service for client-side metrics collection.
 
 ## Summary
 
-Metric is a thin HTTP wrapper for [node-dogstatsd](https://github.com/mrbar42/node-dogstatsd). It receives metric data from browser applications and forwards it to a Datadog Agent, which in turn handles collection of metrics from multiple sources into Datadog.
+Volley is a thin HTTP wrapper for [node-dogstatsd](https://github.com/mrbar42/node-dogstatsd). It receives metric data from browser applications and forwards it to a Datadog Agent, which in turn handles collection of metrics from multiple sources into Datadog.
 
 ## Development
 
