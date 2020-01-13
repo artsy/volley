@@ -12,7 +12,6 @@ RUN chmod +x /usr/local/bin/dumb-init
 RUN mkdir -p /app
 
 # Set up node modules
-RUN npm install -g yarn
 WORKDIR /tmp
 ADD package.json package.json
 ADD yarn.lock yarn.lock
