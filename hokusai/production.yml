@@ -22,6 +22,8 @@ spec:
       containers:
         - name: volley-web
           env:
+            - name: PORT
+              value: '8080'
             - name: STATSD_HOST
               valueFrom:
                 fieldRef:
@@ -34,10 +36,11 @@ spec:
           image: 585031190124.dkr.ecr.us-east-1.amazonaws.com/volley:production
           imagePullPolicy: Always
           ports:
-            - containerPort: 8080
+            - name: volley-http
+              containerPort: 8080
           readinessProbe:
             httpGet:
-              port: 8080
+              port: volley-http
               path: /health
             initialDelaySeconds: 5
             periodSeconds: 10
@@ -85,11 +88,11 @@ spec:
     - port: 443
       protocol: TCP
       name: https
-      targetPort: 8080
+      targetPort: volley-http
     - port: 80
       protocol: TCP
       name: http
-      targetPort: 8080
+      targetPort: volley-http
   selector:
     app: volley
     component: web
