@@ -42,6 +42,9 @@ spec:
             httpGet:
               port: volley-http
               path: /health
+              httpHeaders:
+                - name: X-Forwarded-Proto
+                  value: https
             initialDelaySeconds: 5
             periodSeconds: 10
             timeoutSeconds: 10
