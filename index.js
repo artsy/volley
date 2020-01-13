@@ -24,7 +24,7 @@ const {
 const app = new Koa()
 
 // Make sure we're using SSL
-if (NODE_ENV !== 'development') {
+if (NODE_ENV !== 'development' && NODE_ENV !== 'test') {
   app.use(sslify())
 }
 
