@@ -4,8 +4,8 @@ Datadog Agent proxy service for client-side metrics collection.
 ## Meta
 
 * **State:** Early production
-* **Production:** [http://volley.artsy.net](http://volley.artsy.net)
-* **Staging:** [http://volley-staging.artsy.net](http://volley-staging.artsy.net)
+* **Production:** [http://volley.artsy.net](http://volley.artsy.net) | [k8s](https://kubernetes.artsy.net/#!/deployment/default/volley-web?namespace=default)
+* **Staging:** [http://volley-staging.artsy.net](http://volley-staging.artsy.net) | [k8s](https://kubernetes-staging.artsy.net/#!/deployment/default/volley-web?namespace=default)
 * **CI/Deploys:** [CircleCi](https://circleci.com/gh/artsy/volley); merged PRs to `artsy/volley#master` are automatically deployed to staging; PRs from `staging` to `release` are automatically deployed to production. [Start a deploy...](https://github.com/artsy/volley/compare/release...staging?expand=1)
 * **Point People:** [@izakp](https://github.com/izakp)
 
@@ -33,6 +33,11 @@ hokusai dev start
 ```
 
 That will build a Docker container with the app's dependencies. You can also run development outside Docker, via `yarn install` and `yarn start` (run `npm install -g yarn`, if you don't already have Yarn).
+
+To run the tests run the following command:
+```sh
+hokusai test
+```
 
 ## Usage
 
@@ -124,3 +129,28 @@ The following payload demonstrates the format of all possible metric types:
 A volley in sports is to knock an airborne ball onward without letting it touch the ground. Or it's a large number of projectiles airborn at once. Either way, it's a vaguely physics-oriented term, because of...motion...and stuff.
 
 Enjoy https://www.youtube.com/watch?v=1C9STKF0Lv4, for an example.
+
+## About Artsy
+
+<a href="https://www.artsy.net/">
+  <img align="left" src="https://avatars2.githubusercontent.com/u/546231?s=200&v=4"/>
+</a>
+
+This project is the work of engineers at [Artsy][footer_website], the world's
+leading and largest online art marketplace and platform for discovering art.
+One of our core [Engineering Principles][footer_principles] is being [Open
+Source by Default][footer_open] which means we strive to share as many details
+of our work as possible.
+
+You can learn more about this work from [our blog][footer_blog] and by following
+[@ArtsyOpenSource][footer_twitter] or explore our public data by checking out
+[our API][footer_api]. If you're interested in a career at Artsy, read through
+our [job postings][footer_jobs]!
+
+[footer_website]: https://www.artsy.net/
+[footer_principles]: culture/engineering-principles.md
+[footer_open]: culture/engineering-principles.md#open-source-by-default
+[footer_blog]: https://artsy.github.io/
+[footer_twitter]: https://twitter.com/ArtsyOpenSource
+[footer_api]: https://developers.artsy.net/
+[footer_jobs]: https://www.artsy.net/jobs
