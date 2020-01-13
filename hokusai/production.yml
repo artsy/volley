@@ -4,7 +4,6 @@ kind: Deployment
 metadata:
   name: volley-web
 spec:
-  replicas: 2
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -69,7 +68,20 @@ spec:
                     operator: In
                     values:
                       - foreground
-
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: volley-web
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    name: volley-web
+  minReplicas: 2
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 70
 ---
 apiVersion: v1
 kind: Service
