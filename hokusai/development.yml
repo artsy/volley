@@ -4,7 +4,7 @@ services:
   volley:
     command: node index.js
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=anything
       - PORT=5500
       - STATSD_HOST=docker.for.mac.localhost
     extends:
