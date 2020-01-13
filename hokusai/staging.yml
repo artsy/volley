@@ -20,19 +20,19 @@ spec:
       namespace: default
     spec:
       containers:
-        - env:
-          - name: STATSD_HOST
-            valueFrom:
-              fieldRef:
-                fieldPath: spec.nodeName
-          - name: STATSD_PORT
-            value: "8125"
+        - name: volley-web
+          env:
+            - name: STATSD_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: STATSD_PORT
+              value: '8125'
           envFrom:
             - configMapRef:
                 name: volley-environment
           image: 585031190124.dkr.ecr.us-east-1.amazonaws.com/volley:staging
           imagePullPolicy: Always
-          name: volley-web
           ports:
             - containerPort: 8080
           readinessProbe:
@@ -53,16 +53,16 @@ spec:
       dnsConfig:
         options:
           - name: ndots
-            value: "1"
+            value: '1'
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
-                - key: tier
-                  operator: In
-                  values:
-                    - foreground
+                  - key: tier
+                    operator: In
+                    values:
+                      - foreground
 
 ---
 apiVersion: v1
@@ -75,11 +75,11 @@ metadata:
   name: volley-web
   namespace: default
   annotations:
-    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:iam::585031190124:server-certificate/2018-01-17_artsy-net-wildcard"
-    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
-    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
-    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
-    service.beta.kubernetes.io/aws-load-balancer-connection-draining-enabled: "true"
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: 'arn:aws:iam::585031190124:server-certificate/2018-01-17_artsy-net-wildcard'
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: 'http'
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: '443'
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
+    service.beta.kubernetes.io/aws-load-balancer-connection-draining-enabled: 'true'
 spec:
   ports:
     - port: 443
