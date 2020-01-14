@@ -1,5 +1,6 @@
-const sslify = require('koa-sslify').default
 const Koa = require('koa')
+const sslify = require('koa-sslify')
+const enforce = sslify.default
 const cors = require('@koa/cors')
 const router = require('koa-router')()
 const koaBody = require('koa-body')
@@ -25,7 +26,7 @@ const app = new Koa()
 
 // Make sure we're using SSL
 if (NODE_ENV !== 'development' && NODE_ENV !== 'test') {
-  app.use(sslify())
+  app.use(enforce({ resolver: sslify.xForwardedProtoResolver }))
 }
 
 const globalTags = GLOBAL_TAGS && GLOBAL_TAGS.split(',')
