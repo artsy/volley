@@ -29,10 +29,6 @@ spec:
                   fieldPath: spec.nodeName
             - name: STATSD_PORT
               value: '8125'
-            - name: 'DATADOG_AGENT_HOSTNAME'
-              valueFrom:
-                fieldRef:
-                  fieldPath: spec.nodeName
           envFrom:
             - configMapRef:
                 name: volley-environment

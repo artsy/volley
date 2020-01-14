@@ -10,7 +10,6 @@ const initializePostMetric = require('./src/postMetric')
 const path = require('path')
 const fs = require('fs')
 const tracker = fs.readFileSync(path.join(__dirname, 'assets', 'pixel.png'))
-const initDataDogTracer = require('./src/tracer')
 
 const {
   DEBUG = 'false',
@@ -21,14 +20,9 @@ const {
   STATSD_HOST = 'localhost',
   STATSD_PORT = 8125,
   NODE_ENV,
-  DATADOG_AGENT_HOSTNAME,
 } = process.env
 
 const app = new Koa()
-
-if (DATADOG_AGENT_HOSTNAME) {
-  initDataDogTracer()
-}
 
 // Make sure we're using SSL
 if (NODE_ENV !== 'development' && NODE_ENV !== 'test') {

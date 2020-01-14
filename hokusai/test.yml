@@ -5,7 +5,6 @@ services:
     command: node node_modules/.bin/mocha
     environment:
       - NODE_ENV=test
-      - DATADOG_AGENT_HOSTNAME=test-hostname
     extends:
       file: build.yml
       service: volley

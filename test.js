@@ -3,118 +3,65 @@ const sinon = require('sinon')
 const request = require('supertest')
 const server = require('./index')
 const initializePostMetric = require('./src/postMetric')
-const tracer = require('dd-trace')
-const initDataDogTracer = require('./src/tracer')
 
 describe("the server's reporting capabilities", () => {
   afterEach(() => {
     server.close()
   })
 
-  it('responds that the server is healthy', async () => {
-    const response = await request(server).get('/health')
+  it("responds that the server is healthy", async () => {
+    const response = await request(server).get("/health")
     assert(response.status === 200)
     assert(response.text === 'OK')
   })
 
-  it('reports a given metric', async () => {
+  it("reports a given metric", async () => {
     let payload = {
-      serviceName: 'my-service',
-      metrics: [
+      "serviceName": "my-service",
+      "metrics": [
         {
-          type: 'timer',
-          name: 'elapsed-time',
-          value: 12345,
-          tags: ['tag-name:tag-arg'],
-        },
-      ],
+          "type": "timer",
+          "name": "elapsed-time",
+          "value": 12345,
+          "tags": ["tag-name:tag-arg"]
+        }
+      ]
     }
-    const response = await request(server)
-      .post('/report')
-      .send(payload)
+    const response = await request(server).post("/report").send(payload)
     assert(response.status === 202)
     assert(response.text === 'OK')
   })
 
-  describe('concerning the cloud flare error route', () => {
-    it('responds with 404 if required parameters missing', async () => {
-      const response = await request(server).get('/cloudflareError.png')
+  describe("concerning the cloud flare error route", () => {
+    it("responds with 404 if required parameters missing", async () => {
+      const response = await request(server).get("/cloudflareError.png")
       assert(response.status === 404)
     })
 
-    it('responds with 404 if invalid cloudflareErrorType', async () => {
-      const response = await request(server)
-        .get('/cloudflareError.png?cloudflareErrorType=100')
-        .query({
-          cloudflareErrorType: '100',
-          rayID: '1jud78flight87gh',
-          clientIP: '70.80.171.192',
-        })
+    it("responds with 404 if invalid cloudflareErrorType", async () => {
+      const response = await request(server).get("/cloudflareError.png?cloudflareErrorType=100").query({ cloudflareErrorType: '100', rayID: '1jud78flight87gh', clientIP: '70.80.171.192' })
       assert(response.status === 404)
     })
 
-    it('responds with 404 if invalid RayID', async () => {
-      const response = await request(server)
-        .get('/cloudflareError.png')
-        .query({
-          cloudflareErrorType: '100',
-          rayID: 'foo',
-          clientIP: '70.80.171.192',
-        })
+    it("responds with 404 if invalid RayID", async () => {
+      const response = await request(server).get("/cloudflareError.png").query({ cloudflareErrorType: '100', rayID: 'foo', clientIP: '70.80.171.192' })
       assert(response.status === 404)
     })
 
-    it('responds with 404 if invalid clientIP', async () => {
-      const response = await request(server)
-        .get('/cloudflareError.png')
-        .query({
-          cloudflareErrorType: '100',
-          rayID: '1jud78flight87gh',
-          clientIP: 'bar',
-        })
+    it("responds with 404 if invalid clientIP", async () => {
+      const response = await request(server).get("/cloudflareError.png").query({ cloudflareErrorType: '100', rayID: '1jud78flight87gh', clientIP: 'bar' })
       assert(response.status === 404)
     })
 
-    it('responds with 200 if called with valid parameters and an ipv4 address', async () => {
-      const response = await request(server)
-        .get('/cloudflareError.png')
-        .query({
-          cloudflareErrorType: '500',
-          rayID: '1jud78flight87gh',
-          clientIP: '70.80.171.192',
-        })
+    it("responds with 200 if called with valid parameters and an ipv4 address", async () => {
+      const response = await request(server).get("/cloudflareError.png").query({ cloudflareErrorType: '500', rayID: '1jud78flight87gh', clientIP: '70.80.171.192' })
       assert(response.status === 200)
     })
 
-    it('responds with 200 if called with valid parameters and an ipv6 address', async () => {
-      const response = await request(server)
-        .get('/cloudflareError.png')
-        .query({
-          cloudflareErrorType: '500',
-          rayID: '1jud78flight87gh',
-          clientIP: '2607:fb90:1b6d:1be4:cc9c:67a6:9e00:2229',
-        })
+    it("responds with 200 if called with valid parameters and an ipv6 address", async () => {
+      const response = await request(server).get("/cloudflareError.png").query({ cloudflareErrorType: '500', rayID: '1jud78flight87gh', clientIP: '2607:fb90:1b6d:1be4:cc9c:67a6:9e00:2229' })
       assert(response.status === 200)
     })
-  })
-})
-
-describe('datadog tracing', () => {
-  beforeEach(() => {
-    sinon.stub(tracer, 'init')
-    sinon.stub(tracer, 'use')
-  })
-
-  it('initializes tracer with correct args', () => {
-    initDataDogTracer()
-    assert(tracer.init.called === true)
-    assert(tracer.use.called === true)
-    assert(tracer.init.args[0][0].service === 'volley.undetected')
-    assert(tracer.init.args[0][0].hostname === 'test-hostname')
-    assert(tracer.use.args[0][0] === 'koa')
-    assert(tracer.use.args[0][1].service === 'volley')
-    assert(tracer.use.args[1][0] === 'http')
-    assert(tracer.use.args[1][1].service === 'volley.http')
   })
 })
 
@@ -176,11 +123,9 @@ describe('postMetric', () => {
 
   describe('with a tag whitelist containing only "valid-tag:valid-value"', () => {
     beforeEach(() => {
-      postMetric = initializePostMetric(
-        statsdClient,
-        [],
-        ['valid-tag:valid-value']
-      )
+      postMetric = initializePostMetric(statsdClient, [], [
+        'valid-tag:valid-value',
+      ])
     })
 
     it('should call statsdClient.histogram for tag "valid-tag:valid-value"', () => {
