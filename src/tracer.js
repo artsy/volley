@@ -3,8 +3,6 @@ const tracer = require('dd-trace')
 module.exports = function init() {
   const ddServicePrefix = 'volley'
 
-  console.log('Tracer init called')
-
   tracer.init({
     // Setting the service name to  `.undetected` so that we detect services that
     // are running as part of the application, but aren't explicitly configured

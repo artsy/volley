@@ -11,6 +11,7 @@ const path = require('path')
 const fs = require('fs')
 const tracker = fs.readFileSync(path.join(__dirname, 'assets', 'pixel.png'))
 const initDataDogTracer = require('./src/tracer')
+const Sentry = require('@sentry/node')
 
 const {
   DEBUG = 'false',
@@ -22,12 +23,24 @@ const {
   STATSD_PORT = 8125,
   NODE_ENV,
   DATADOG_AGENT_HOSTNAME,
+  SENTRY_DSN,
 } = process.env
 
 const app = new Koa()
 
 if (DATADOG_AGENT_HOSTNAME) {
   initDataDogTracer()
+}
+
+if (SENTRY_DSN) {
+  Sentry.init({
+    dsn: SENTRY_DSN,
+  })
+  // The request handler must be the first middleware on the app
+  app.use(Sentry.Handlers.requestHandler())
+
+  // The error handler must be before any other error middleware
+  app.use(Sentry.Handlers.errorHandler())
 }
 
 // Make sure we're using SSL
