@@ -58,7 +58,7 @@
     "@sentry/types" "5.11.0"
     tslib "^1.9.3"
 
-"@sentry/node@^5.11.1":
+"@sentry/node@5.11.1":
   version "5.11.1"
   resolved "https://registry.yarnpkg.com/@sentry/node/-/node-5.11.1.tgz#2a9c18cd1209cfdf7a69b9d91303413149d2c910"
   integrity sha512-FbJs0blJ36gEzE0rc2yBfA/KE+kXOLl8MUfFTcyJCBdCGF8XMETDCmgINnJ4TyBUJviwKoPw2TCk9TL2pa/A1w==
@@ -225,7 +225,7 @@ core-util-is@~1.0.0:
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
   integrity sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
 
-dd-trace@^0.16.3:
+dd-trace@0.16.3:
   version "0.16.3"
   resolved "https://registry.yarnpkg.com/dd-trace/-/dd-trace-0.16.3.tgz#3a7e36ee2f96e07604c635793d664bab18d98cba"
   integrity sha512-K77UMS/UziXxV2QnJ8DO/08JRl63AC6GPvXQ90we16s4QNc4LNKlJjaUgV3u+rvkfx8Dg/bJv0YwER0x2Rb9mg==
