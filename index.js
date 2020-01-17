@@ -36,11 +36,10 @@ if (SENTRY_DSN) {
   Sentry.init({
     dsn: SENTRY_DSN,
   })
-  // The request handler must be the first middleware on the app
-  app.use(Sentry.Handlers.requestHandler())
 
-  // The error handler must be before any other error middleware
-  app.use(Sentry.Handlers.errorHandler())
+  app.on('error', err => {
+    Sentry.captureException(err)
+  })
 }
 
 // Make sure we're using SSL
