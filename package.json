@@ -7,7 +7,7 @@
   "author": "Alan Johnson",
   "scripts": {
     "start": "node index.js",
-    "test": "mocha"
+    "test": "jest"
   },
   "license": "MIT",
   "private": true,
@@ -43,6 +43,7 @@
   },
   "jest": {
     "testEnvironment": "node",
+    "setupFiles": ["dotenv/config", "<rootDir>/test.config.js"],
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ]

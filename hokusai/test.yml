@@ -3,9 +3,7 @@ version: '2'
 services:
   volley:
     command: yarn jest
-    environment:
-      - NODE_ENV=test
-      - DATADOG_AGENT_HOSTNAME=test-hostname
+    env_file: ../.env.test
     extends:
       file: build.yml
       service: volley
