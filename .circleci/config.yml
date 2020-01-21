@@ -31,17 +31,17 @@ workflows:
           post-steps:
             - run: mkdir -p ./coverage ./reports
             - run:
-              name: Copy coverage artifacts
-              command: docker cp hokusai_volley_1:/app/coverage ./
-              when: always
+                name: Copy coverage artifacts
+                command: docker cp hokusai_volley_1:/app/coverage ./
+                when: always
             - codecov/upload:
-              file: ./coverage/lcov.info
+                file: ./coverage/lcov.info
             - run:
-              name: Copy coverage reports
-              command: docker cp hokusai_volley_1:/app/reports ./
-              when: always
+                name: Copy coverage reports
+                command: docker cp hokusai_volley_1:/app/reports ./
+                when: always
             - store_test_results:
-              path: ./reports
+                path: ./reports
 
       - hokusai/push:
           name: push-staging-image
