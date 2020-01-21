@@ -2,8 +2,13 @@ const request = require('supertest')
 const server = require('../index')
 
 describe("the server's reporting capabilities", () => {
+  beforeEach(() => {
+    console.error = jest.fn()
+  })
+
   afterEach(() => {
     server.close()
+    console.error.mockClear()
   })
 
   it('responds that the server is healthy', async () => {
@@ -35,6 +40,7 @@ describe("the server's reporting capabilities", () => {
     it('responds with 404 if required parameters missing', async () => {
       const response = await request(server).get('/cloudflareError.png')
       expect(response.status).toBe(404)
+      expect(console.error).toBeCalledWith('Missing required parameters')
     })
 
     it('responds with 404 if invalid cloudflareErrorType', async () => {
@@ -46,6 +52,7 @@ describe("the server's reporting capabilities", () => {
           clientIP: '70.80.171.192',
         })
       expect(response.status).toBe(404)
+      expect(console.error).toBeCalledWith('Unregistered error type 100,100')
     })
 
     it('responds with 404 if invalid RayID', async () => {
@@ -57,6 +64,7 @@ describe("the server's reporting capabilities", () => {
           clientIP: '70.80.171.192',
         })
       expect(response.status).toBe(404)
+      expect(console.error).toBeCalledWith('Invalid Ray ID foo')
     })
 
     it('responds with 404 if invalid clientIP', async () => {
@@ -68,6 +76,7 @@ describe("the server's reporting capabilities", () => {
           clientIP: 'bar',
         })
       expect(response.status).toBe(404)
+      expect(console.error).toBeCalledWith('Invalid client IP bar')
     })
 
     it('responds with 200 if called with valid parameters and an ipv4 address', async () => {
