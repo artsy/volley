@@ -15,6 +15,11 @@ describe('postMetric', () => {
       histogram: jest.fn(),
       set: jest.fn(),
     }
+    console.error = jest.fn()
+  })
+
+  afterEach(() => {
+    console.error.mockClear()
   })
 
   describe('with no whitelists', () => {
@@ -45,7 +50,6 @@ describe('postMetric', () => {
       })
       expect(statsdClient.histogram).toBeCalled()
     })
-
     it('should not call statsdClient.histogram for name "invalid-stat"', () => {
       postMetric('my-service', {
         type: 'histogram',
@@ -53,6 +57,9 @@ describe('postMetric', () => {
         value: 123,
       })
       expect(statsdClient.histogram).not.toBeCalled()
+      expect(console.error).toBeCalledWith(
+        'Metric name "invalid-stat" not in white list.'
+      )
     })
   })
 
@@ -82,6 +89,9 @@ describe('postMetric', () => {
         value: 123,
       })
       expect(statsdClient.histogram).not.toBeCalled()
+      expect(console.error).toBeCalledWith(
+        'Metric tags were empty or absent, but white list does not include "_".'
+      )
     })
 
     it('should not call statsdClient.histogram with tag "invalid-tag:invalid-value"', () => {
@@ -92,6 +102,9 @@ describe('postMetric', () => {
         tags: ['invalid-tag:invalid-value'],
       })
       expect(statsdClient.histogram).not.toBeCalled()
+      expect(console.error).toBeCalledWith(
+        'Metric tags "invalid-tag:invalid-value" has tags not in white list.'
+      )
     })
   })
 
