@@ -2,7 +2,7 @@
 version: '2'
 services:
   volley:
-    command: node node_modules/.bin/mocha
+    command: yarn jest
     environment:
       - NODE_ENV=test
       - DATADOG_AGENT_HOSTNAME=test-hostname
