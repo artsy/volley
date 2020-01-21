@@ -1,4 +1,4 @@
-require('dotenv').config
+require('dotenv').config()
 const initDataDogTracer = require('./src/tracer')
 
 const {
