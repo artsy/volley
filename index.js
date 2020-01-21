@@ -1,17 +1,4 @@
-const Koa = require('koa')
-const sslify = require('koa-sslify')
-const enforce = sslify.default
-const cors = require('@koa/cors')
-const router = require('koa-router')()
-const koaBody = require('koa-body')
-const { StatsD } = require('node-dogstatsd')
-const ipAddress = require('ip-address')
-const initializePostMetric = require('./src/postMetric')
-const path = require('path')
-const fs = require('fs')
-const tracker = fs.readFileSync(path.join(__dirname, 'assets', 'pixel.png'))
 const initDataDogTracer = require('./src/tracer')
-const Sentry = require('@sentry/node')
 
 const {
   DEBUG = 'false',
@@ -26,11 +13,26 @@ const {
   SENTRY_DSN,
 } = process.env
 
-const app = new Koa()
-
+// Setup DataDog before importing another modules as per the documentation.
 if (DATADOG_AGENT_HOSTNAME) {
   initDataDogTracer()
 }
+
+const Koa = require('koa')
+const sslify = require('koa-sslify')
+const enforce = sslify.default
+const cors = require('@koa/cors')
+const router = require('koa-router')()
+const koaBody = require('koa-body')
+const { StatsD } = require('node-dogstatsd')
+const ipAddress = require('ip-address')
+const initializePostMetric = require('./src/postMetric')
+const path = require('path')
+const fs = require('fs')
+const tracker = fs.readFileSync(path.join(__dirname, 'assets', 'pixel.png'))
+const Sentry = require('@sentry/node')
+
+const app = new Koa()
 
 if (SENTRY_DSN) {
   Sentry.init({
