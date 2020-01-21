@@ -37,13 +37,14 @@
   },
   "devDependencies": {
     "jest": "^24.9.0",
-    "mocha": "5.1.1",
-    "sinon": "5.0.3",
     "supertest": "4.0.2"
   },
   "jest": {
     "testEnvironment": "node",
-    "setupFiles": ["dotenv/config", "<rootDir>/test.config.js"],
+    "setupFiles": [
+      "dotenv/config",
+      "<rootDir>/test.config.js"
+    ],
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ]
