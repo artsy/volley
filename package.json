@@ -35,8 +35,15 @@
     ]
   },
   "devDependencies": {
+    "jest": "^24.9.0",
     "mocha": "5.1.1",
     "sinon": "5.0.3",
     "supertest": "4.0.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   }
 }
