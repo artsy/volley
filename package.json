@@ -15,7 +15,7 @@
     "@koa/cors": "2.2.1",
     "@sentry/node": "5.11.1",
     "dd-trace": "0.16.3",
-    "dotenv": "^8.2.0",
+    "dotenv": "8.2.0",
     "ip-address": "6.1.0",
     "koa": "2.5.1",
     "koa-body": "2.5.0",
@@ -36,8 +36,8 @@
     ]
   },
   "devDependencies": {
-    "jest": "^24.9.0",
-    "jest-junit": "^10.0.0",
+    "jest": "24.9.0",
+    "jest-junit": "10.0.0",
     "supertest": "4.0.2"
   },
   "jest": {
