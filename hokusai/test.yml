@@ -2,7 +2,7 @@
 version: '2'
 services:
   volley:
-    command: yarn jest
+    command: yarn test
     env_file: ../.env.test
     extends:
       file: build.yml
