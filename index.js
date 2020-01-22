@@ -1,3 +1,23 @@
+const initDataDogTracer = require('./src/tracer')
+
+const {
+  DEBUG = 'false',
+  GLOBAL_TAGS = '',
+  METRIC_NAME_WHITELIST = null,
+  METRIC_TAG_WHITELIST = null,
+  PORT = 5500,
+  STATSD_HOST = 'localhost',
+  STATSD_PORT = 8125,
+  NODE_ENV,
+  DATADOG_AGENT_HOSTNAME,
+  SENTRY_DSN,
+} = process.env
+
+// Setup DataDog before importing another modules as per the documentation.
+if (DATADOG_AGENT_HOSTNAME) {
+  initDataDogTracer()
+}
+
 const Koa = require('koa')
 const sslify = require('koa-sslify')
 const enforce = sslify.default
@@ -10,19 +30,19 @@ const initializePostMetric = require('./src/postMetric')
 const path = require('path')
 const fs = require('fs')
 const tracker = fs.readFileSync(path.join(__dirname, 'assets', 'pixel.png'))
-
-const {
-  DEBUG = 'false',
-  GLOBAL_TAGS = '',
-  METRIC_NAME_WHITELIST = null,
-  METRIC_TAG_WHITELIST = null,
-  PORT = 5500,
-  STATSD_HOST = 'localhost',
-  STATSD_PORT = 8125,
-  NODE_ENV,
-} = process.env
+const Sentry = require('@sentry/node')
 
 const app = new Koa()
+
+if (SENTRY_DSN) {
+  Sentry.init({
+    dsn: SENTRY_DSN,
+  })
+
+  app.on('error', err => {
+    Sentry.captureException(err)
+  })
+}
 
 // Make sure we're using SSL
 if (NODE_ENV !== 'development' && NODE_ENV !== 'test') {
