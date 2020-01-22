@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   hokusai: artsy/hokusai@0.7.0
+  codecov: codecov/codecov@1.0.5
 
 not_staging_or_release: &not_staging_or_release
   filters:
@@ -27,6 +28,20 @@ workflows:
     jobs:
       - hokusai/test:
           <<: *not_staging_or_release
+          post-steps:
+            - run: mkdir -p ./coverage ./reports
+            - run:
+                name: Copy coverage artifacts
+                command: docker cp hokusai_volley_1:/app/coverage ./
+                when: always
+            - codecov/upload:
+                file: ./coverage/lcov.info
+            - run:
+                name: Copy coverage reports
+                command: docker cp hokusai_volley_1:/app/reports ./
+                when: always
+            - store_test_results:
+                path: ./reports
 
       - hokusai/push:
           name: push-staging-image
@@ -36,10 +51,9 @@ workflows:
 
       - hokusai/deploy-staging:
           <<: *only_master
-          project-name: "volley"
+          project-name: 'volley'
           requires:
             - push-staging-image
 
       - hokusai/deploy-production:
           <<: *only_release
-

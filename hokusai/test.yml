@@ -2,10 +2,8 @@
 version: '2'
 services:
   volley:
-    command: node node_modules/.bin/mocha
-    environment:
-      - NODE_ENV=test
-      - DATADOG_AGENT_HOSTNAME=test-hostname
+    command: yarn test
+    env_file: ../.env.test
     extends:
       file: build.yml
       service: volley

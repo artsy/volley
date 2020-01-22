@@ -20,10 +20,6 @@
       "args": ["run", "test"]
     },
     {
-      "taskName": "mocha",
-      "args": ["run", "mocha", "${file}"]
-    },
-    {
       "taskName": "build",
       "isBuildCommand": true,
       "args": ["run", "build"]
