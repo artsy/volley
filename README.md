@@ -1,15 +1,13 @@
 # Volley
 Datadog Agent proxy service for client-side metrics collection.
 
-## Meta
+## Meta [![CircleCI](https://circleci.com/gh/artsy/volley/tree/master.svg?style=svg&circle-token=93f0f535305caf8dc13f6fbc7ff36e9062598937)](https://circleci.com/gh/artsy/volley/tree/master) [![codecov](https://codecov.io/gh/artsy/volley/branch/master/graph/badge.svg)](https://codecov.io/gh/artsy/volley)
 
 * **State:** Early production
 * **Production:** [http://volley.artsy.net](http://volley.artsy.net) | [k8s](https://kubernetes.artsy.net/#!/deployment/default/volley-web?namespace=default)
 * **Staging:** [http://volley-staging.artsy.net](http://volley-staging.artsy.net) | [k8s](https://kubernetes-staging.artsy.net/#!/deployment/default/volley-web?namespace=default)
 * **CI/Deploys:** [CircleCi](https://circleci.com/gh/artsy/volley); merged PRs to `artsy/volley#master` are automatically deployed to staging; PRs from `staging` to `release` are automatically deployed to production. [Start a deploy...](https://github.com/artsy/volley/compare/release...staging?expand=1)
 * **Point People:** [@izakp](https://github.com/izakp)
-
-[![CircleCI](https://circleci.com/gh/artsy/volley/tree/master.svg?style=svg&circle-token=93f0f535305caf8dc13f6fbc7ff36e9062598937)](https://circleci.com/gh/artsy/volley/tree/master)
 
 ## Summary
 
@@ -36,6 +34,8 @@ That will build a Docker container with the app's dependencies. You can also run
 
 To run the tests run the following command:
 ```sh
+yarn test
+# or
 hokusai test
 ```
 
