@@ -11,6 +11,9 @@
   },
   "license": "MIT",
   "private": true,
+  "engines": {
+    "node": "12"
+  },
   "dependencies": {
     "@koa/cors": "2.2.1",
     "@sentry/node": "5.11.1",
