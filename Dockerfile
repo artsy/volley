@@ -10,7 +10,7 @@ RUN apk --no-cache --quiet add \
 
 # Set up node modules
 COPY package.json yarn.lock ./
-RUN yarn install && yarn cache clean
+RUN yarn install --frozen-lockfile && yarn cache clean
 
 # Finally, add the rest of our app's code
 # (this is done at the end so that changes to our app's code
