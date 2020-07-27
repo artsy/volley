@@ -1,6 +1,6 @@
 {
   "extends": [
-    "@artsy:app"
+    "@artsy:app", "schedule:nonOfficeHours"
   ],
   "assignees": [
     "izakp"
