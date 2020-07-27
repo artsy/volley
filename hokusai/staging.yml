@@ -134,7 +134,7 @@ spec:
       name: http
       targetPort: 8080
   selector:
-    app: currents
+    app: volley
     layer: application
     component: web
   type: ClusterIP
