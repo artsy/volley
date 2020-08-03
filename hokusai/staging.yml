@@ -146,10 +146,10 @@ metadata:
   name: volley
 spec:
   rules:
-    - host: imports-staging.artsy.net
+    - host: volley-staging.artsy.net
       http:
         paths:
           - path: /
             backend:
-              serviceName: currents-web-internal
+              serviceName: volley-web-internal
               servicePort: http
