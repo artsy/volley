@@ -132,10 +132,10 @@ spec:
     - port: 8080
       protocol: TCP
       name: http
-      targetPort: 80
+      targetPort: 8080
   selector:
     app: volley
-    layer: volley
+    layer: application
     component: web
   type: ClusterIP
 
