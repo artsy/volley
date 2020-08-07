@@ -94,37 +94,6 @@ metadata:
     app: volley
     component: web
     layer: application
-  name: volley-web
-  namespace: default
-  annotations:
-    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: {{ artsyNetWildcardSSLCert }}
-    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: 'http'
-    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: '443'
-    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
-    service.beta.kubernetes.io/aws-load-balancer-connection-draining-enabled: 'true'
-spec:
-  ports:
-    - port: 443
-      protocol: TCP
-      name: https
-      targetPort: volley-http
-    - port: 80
-      protocol: TCP
-      name: http
-      targetPort: volley-http
-  selector:
-    app: volley
-    component: web
-    layer: application
-  type: LoadBalancer
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: volley
-    component: web
-    layer: application
   name: volley-web-internal
   namespace: default
 spec:
