@@ -4,6 +4,4 @@ services:
   volley:
     command: yarn test
     env_file: ../.env.test
-    extends:
-      file: build.yml
-      service: volley
+{% include 'templates/docker-compose-service.yml.j2' %}
