@@ -1,8 +1,8 @@
-const initializePostMetric = require('../postMetric')
+import { initialize as initializePostMetric } from '../postMetric'
 
 describe('postMetric', () => {
-  let statsdClient
-  let postMetric
+  let statsdClient: any
+  let postMetric: any
 
   beforeEach(() => {
     statsdClient = {
@@ -19,7 +19,7 @@ describe('postMetric', () => {
   })
 
   afterEach(() => {
-    console.error.mockClear()
+    (console.error as any).mockClear()
   })
 
   describe('with no whitelists', () => {

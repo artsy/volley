@@ -1,5 +1,5 @@
 const tracer = require('dd-trace')
-const initDataDogTracer = require('../tracer')
+const { initDataDogTracer } = require('../tracer')
 
 jest.mock('dd-trace', () => ({
   init: jest.fn(),

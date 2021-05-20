@@ -1,5 +1,5 @@
-const request = require('supertest')
-const server = require('../index')
+import request from 'supertest'
+import { server } from '../index'
 
 describe("the server's reporting capabilities", () => {
   beforeEach(() => {
@@ -7,8 +7,8 @@ describe("the server's reporting capabilities", () => {
   })
 
   afterEach(() => {
-    server.close()
-    console.error.mockClear()
+    server.close(() => {})
+    ;(console.error as any).mockClear()
   })
 
   it('responds that the server is healthy', async () => {

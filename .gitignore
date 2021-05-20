@@ -55,3 +55,5 @@ typings/
 # dotenv environment variables file
 .env
 
+# Dist folder
+dist/

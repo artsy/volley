@@ -1,6 +1,6 @@
-const tracer = require('dd-trace')
+import tracer from 'dd-trace'
 
-module.exports = function init() {
+export const initDataDogTracer = () => {
   const ddServicePrefix = 'volley'
 
   tracer.init({

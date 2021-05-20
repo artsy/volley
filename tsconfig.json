@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./src",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "target": "ES2020",
+    "outDir": "dist",
+    "typeRoots": [
+      "./types",
+      "./node_modules/@types"
+    ]
+  },
+  "include": [
+    "./src/**/*"
+  ],
+}
