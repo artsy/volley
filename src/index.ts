@@ -28,7 +28,7 @@ import { StatsD } from 'node-dogstatsd'
 import ipAddress from 'ip-address'
 import path from 'path'
 import fs from 'fs'
-import Sentry from '@sentry/node'
+import * as Sentry from '@sentry/node'
 
 import { initialize } from './app/postMetric'
 import { calibreWebhookRoute } from './app/calibreWebhookRoute'
