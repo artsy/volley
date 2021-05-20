@@ -2,7 +2,7 @@
 version: '2'
 services:
   volley:
-    command: node index.js
+    command: yarn dev
     environment:
       - NODE_ENV=development
       - PORT=5500

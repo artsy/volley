@@ -1,5 +1,5 @@
 require('dotenv').config()
-const initDataDogTracer = require('./src/tracer')
+import { initDataDogTracer } from './app/tracer'
 
 const {
   DEBUG = 'false',
@@ -19,21 +19,24 @@ if (DATADOG_AGENT_HOSTNAME) {
   initDataDogTracer()
 }
 
-const Koa = require('koa')
-const sslify = require('koa-sslify')
-const enforce = sslify.default
-const cors = require('@koa/cors')
-const router = require('koa-router')()
-const koaBody = require('koa-body')
-const { StatsD } = require('node-dogstatsd')
-const ipAddress = require('ip-address')
-const initializePostMetric = require('./src/postMetric')
-const path = require('path')
-const fs = require('fs')
-const tracker = fs.readFileSync(path.join(__dirname, 'assets', 'pixel.png'))
-const Sentry = require('@sentry/node')
+import Koa from 'koa'
+import Router from '@koa/router'
+import sslify, { xForwardedProtoResolver as resolver } from 'koa-sslify'
+import cors from '@koa/cors'
+import koaBody from 'koa-body'
+import { StatsD } from 'node-dogstatsd'
+import ipAddress from 'ip-address'
+import path from 'path'
+import fs from 'fs'
+import Sentry from '@sentry/node'
+
+import { initialize } from './app/postMetric'
+import { calibreWebhookRoute } from './app/calibreWebhookRoute'
 
 const app = new Koa()
+const router = new Router()
+
+const tracker = fs.readFileSync(path.resolve(__dirname, '..', 'assets', 'pixel.png'))
 
 if (SENTRY_DSN) {
   Sentry.init({
@@ -47,24 +50,12 @@ if (SENTRY_DSN) {
 
 // Make sure we're using SSL
 if (NODE_ENV !== 'development' && NODE_ENV !== 'test') {
-  app.use(enforce({ resolver: sslify.xForwardedProtoResolver }))
+  app.use(sslify({ resolver }))
 }
 
 const globalTags = GLOBAL_TAGS && GLOBAL_TAGS.split(',')
-
-let metricNameWhitelist = []
-if (METRIC_NAME_WHITELIST) {
-  metricNameWhitelist = metricNameWhitelist.concat(
-    METRIC_NAME_WHITELIST.split(',')
-  )
-}
-
-let metricTagWhitelist = []
-if (METRIC_TAG_WHITELIST) {
-  metricTagWhitelist = metricTagWhitelist.concat(
-    METRIC_TAG_WHITELIST.split(',')
-  )
-}
+const metricNameWhitelist: string[] = METRIC_NAME_WHITELIST ? METRIC_NAME_WHITELIST.split(',') : []
+const metricTagWhitelist: string[] = METRIC_TAG_WHITELIST ? METRIC_TAG_WHITELIST.split(',') : []
 
 const validCloudFlareErrorTypes = ['500', '1000']
 const rayIDLen = 16
@@ -74,8 +65,8 @@ if (DEBUG === 'true') {
   statsdClient = new Proxy(
     {},
     {
-      get(obj, prop) {
-        return (...args) => {
+      get(obj, prop: string) {
+        return (...args: any[]) => {
           const argsStr = JSON.stringify(args).slice(1, -1)
           const globalTagsStr = JSON.stringify(globalTags)
           console.log(
@@ -91,7 +82,7 @@ if (DEBUG === 'true') {
   })
 }
 
-const postMetric = initializePostMetric(
+const postMetric = initialize(
   statsdClient,
   metricNameWhitelist,
   metricTagWhitelist
@@ -101,9 +92,10 @@ router
   .get('/health', async ctx => {
     ctx.body = 'OK'
   })
+  .post("/webhook", calibreWebhookRoute(postMetric))
   .post('/report', async ctx => {
     const { serviceName, metrics } = ctx.request.body
-    metrics.forEach(metricData => postMetric(serviceName, metricData))
+    metrics.forEach((metricData: any) => postMetric(serviceName, metricData))
     ctx.status = 202
     ctx.body = 'OK'
   })
@@ -115,22 +107,22 @@ router
     ) {
       console.error('Missing required parameters')
       ctx.status = 404
-    } else if (
-      !validCloudFlareErrorTypes.includes(ctx.query['cloudflareErrorType'])
-    ) {
-      console.error(
-        `Unregistered error type ${ctx.query['cloudflareErrorType']}`
-      )
+
+    } else if (!validCloudFlareErrorTypes.includes(ctx.query['cloudflareErrorType'] as string)) {
+      console.error(`Unregistered error type ${ctx.query['cloudflareErrorType']}`)
       ctx.status = 404
+
     } else if (ctx.query['rayID'].length != rayIDLen) {
       console.error(`Invalid Ray ID ${ctx.query['rayID']}`)
       ctx.status = 404
+
     } else if (
       !new ipAddress.Address4(ctx.query['clientIP']).isValid() &&
       !new ipAddress.Address6(ctx.query['clientIP']).isValid()
     ) {
       console.error(`Invalid client IP ${ctx.query['clientIP']}`)
       ctx.status = 404
+
     } else {
       postMetric('volley', {
         type: 'increment',
@@ -150,6 +142,4 @@ app.use(cors())
 app.use(koaBody())
 app.use(router.routes())
 
-module.exports = app.listen(PORT)
-
-console.log(`Listening on port ${PORT}`)
+export const server = app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
