@@ -1,4 +1,9 @@
+# Start from alpine
 FROM node:12.18-alpine
+
+# Expose ports
+ENV PORT 8080
+EXPOSE 8080
 
 # Install dumb-init
 # Set up deploy user
@@ -15,9 +20,6 @@ USER deploy
 # Set up node modules
 COPY --chown=deploy:deploy package.json yarn.lock ./
 RUN yarn install --frozen-lockfile && yarn cache clean
-
-ENV PORT 8080
-EXPOSE 8080
 
 # Finally, add the rest of our app's code
 # (this is done at the end so that changes to our app's code
