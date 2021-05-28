@@ -16,7 +16,7 @@ export const calibreWebhookRoute = (postMetric: postMetric) => {
 
     const pages = ctx.request.body.pages as CalibrePage[]
     for (let page of pages) {
-      const pageId = sanitize(page.id)
+      const pageName = sanitize(page.name)
       const pageDevice = sanitize(page.profile).toLowerCase()
       const deviceType = (pageDevice === 'chrome_desktop') ? 'desktop' : 'mobile'
 
@@ -24,7 +24,7 @@ export const calibreWebhookRoute = (postMetric: postMetric) => {
         const prefix = `${CALIBRE_SERVICE_PREFIX}.${siteId}`
 
         const volley = VolleyApi.fromCalibreApi(metric, [
-          `form:${deviceType}`, `mode:${pageDevice}`, `page:${pageId}`
+          `form:${deviceType}`, `mode:${pageDevice}`, `page:${pageName}`, `uuid:${page.uuid}`
         ])
 
         postMetric(prefix, volley, true)
