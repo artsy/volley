@@ -22,12 +22,12 @@ describe('postMetric', () => {
     (console.error as any).mockClear()
   })
 
-  describe('with no whitelists', () => {
+  describe('with no allowlists', () => {
     beforeEach(() => {
       postMetric = initializePostMetric(statsdClient, [], [])
     })
 
-    it('should call statsdClient.histogram when there are no whitelists', () => {
+    it('should call statsdClient.histogram when there are no allowlists', () => {
       postMetric('my-service', {
         type: 'histogram',
         name: 'stat',
@@ -37,7 +37,7 @@ describe('postMetric', () => {
     })
   })
 
-  describe('with a name whitelist containing only "valid-stat"', () => {
+  describe('with a name allowlist containing only "valid-stat"', () => {
     beforeEach(() => {
       postMetric = initializePostMetric(statsdClient, ['valid-stat'], [])
     })
@@ -58,12 +58,12 @@ describe('postMetric', () => {
       })
       expect(statsdClient.histogram).not.toBeCalled()
       expect(console.error).toBeCalledWith(
-        'Metric name "invalid-stat" not in white list.'
+        'Metric name "invalid-stat" not in allow list.'
       )
     })
   })
 
-  describe('with a tag whitelist containing only "valid-tag:valid-value"', () => {
+  describe('with a tag allowlist containing only "valid-tag:valid-value"', () => {
     beforeEach(() => {
       postMetric = initializePostMetric(
         statsdClient,
@@ -90,7 +90,7 @@ describe('postMetric', () => {
       })
       expect(statsdClient.histogram).not.toBeCalled()
       expect(console.error).toBeCalledWith(
-        'Metric tags were empty or absent, but white list does not include "_".'
+        'Metric tags were empty or absent, but allow list does not include "_".'
       )
     })
 
@@ -103,12 +103,12 @@ describe('postMetric', () => {
       })
       expect(statsdClient.histogram).not.toBeCalled()
       expect(console.error).toBeCalledWith(
-        'Metric tags "invalid-tag:invalid-value" has tags not in white list.'
+        'Metric tags "invalid-tag:invalid-value" has tags not in allow list.'
       )
     })
   })
 
-  describe('with a tag whitelist containing only "_"', () => {
+  describe('with a tag allowlist containing only "_"', () => {
     beforeEach(() => {
       postMetric = initializePostMetric(statsdClient, [], ['_'])
     })

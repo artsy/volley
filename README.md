@@ -41,12 +41,12 @@ hokusai test
 
 ## Usage
 
-### Whitelists
+### Allowlists
 
-Because Datadog plans have an allotment of custom metrics and tags, Metric offers the ability to restrict possible values for metric names and tags that are allowed. The whitelists are managed by environment variables.
+Because Datadog plans have an allotment of custom metrics and tags, Metric offers the ability to restrict possible values for metric names and tags that are allowed. The allowlists are managed by environment variables.
 
-* Get the current METRIC_NAME_WHITELIST with `hokusai staging env get METRIC_NAME_WHITELIST`
-* Set its new value with `hokusai staging env set METRIC_NAME_WHITELIST=preexisting-tag:value,new-tag:new-value`
+* Get the current METRIC_NAME_ALLOWLIST with `hokusai staging env get METRIC_NAME_ALLOWLIST`
+* Set its new value with `hokusai staging env set METRIC_NAME_LIST=preexisting-tag:value,new-tag:new-value`
 * Refresh the environment with `hokusai staging deployment refresh`
 * Do the same thing in `production` when you're satisfied.
 

@@ -4,8 +4,8 @@ import { initDataDogTracer } from './app/tracer'
 const {
   DEBUG = 'false',
   GLOBAL_TAGS = '',
-  METRIC_NAME_WHITELIST = null,
-  METRIC_TAG_WHITELIST = null,
+  METRIC_NAME_ALLOWLIST = null,
+  METRIC_TAG_ALLOWLIST = null,
   PORT = 5500,
   STATSD_HOST = 'localhost',
   STATSD_PORT = 8125,
@@ -54,8 +54,8 @@ if (NODE_ENV !== 'development' && NODE_ENV !== 'test') {
 }
 
 const globalTags = GLOBAL_TAGS && GLOBAL_TAGS.split(',')
-const metricNameWhitelist: string[] = METRIC_NAME_WHITELIST ? METRIC_NAME_WHITELIST.split(',') : []
-const metricTagWhitelist: string[] = METRIC_TAG_WHITELIST ? METRIC_TAG_WHITELIST.split(',') : []
+const metricNameAllowlist: string[] = METRIC_NAME_ALLOWLIST ? METRIC_NAME_ALLOWLIST.split(',') : []
+const metricTagAllowlist: string[] = METRIC_TAG_ALLOWLIST ? METRIC_TAG_ALLOWLIST.split(',') : []
 
 const validCloudFlareErrorTypes = ['500', '1000']
 const rayIDLen = 16
@@ -84,8 +84,8 @@ if (DEBUG === 'true') {
 
 const postMetric = initialize(
   statsdClient,
-  metricNameWhitelist,
-  metricTagWhitelist
+  metricNameAllowlist,
+  metricTagAllowlist
 )
 
 router
