@@ -1,28 +1,28 @@
-export type postMetric = (serviceName: string, metricData: object, skipWhitelistCheck?: boolean) => void
+export type postMetric = (serviceName: string, metricData: object, skipAllowlistCheck?: boolean) => void
 
 export const initialize = (
   statsdClient: any,
-  metricNameWhitelist: any,
-  metricTagWhitelist: any
+  metricNameAllowlist: any,
+  metricTagAllowlist: any
 ): postMetric => {
 
-  function isWhitelisted(metricData: any) {
-    if (metricNameWhitelist.length && !metricNameWhitelist.includes(metricData.name)) {
-      console.error(`Metric name "${metricData.name}" not in white list.`)
+  function isAllowlisted(metricData: any) {
+    if (metricNameAllowlist.length && !metricNameAllowlist.includes(metricData.name)) {
+      console.error(`Metric name "${metricData.name}" not in allow list.`)
       return false
     } else if (
-      metricTagWhitelist.length &&
+      metricTagAllowlist.length &&
       metricData.tags &&
-      metricData.tags.some((tag: string) => !metricTagWhitelist.includes(tag))
+      metricData.tags.some((tag: string) => !metricTagAllowlist.includes(tag))
     ) {
-      console.error(`Metric tags "${metricData.tags}" has tags not in white list.`)
+      console.error(`Metric tags "${metricData.tags}" has tags not in allow list.`)
       return false
     } else if (
       (!metricData.tags || !metricData.tags.length) &&
-      metricTagWhitelist.length &&
-      !metricTagWhitelist.includes('_')
+      metricTagAllowlist.length &&
+      !metricTagAllowlist.includes('_')
     ) {
-      console.error(`Metric tags were empty or absent, but white list does not include "_".`)
+      console.error(`Metric tags were empty or absent, but allow list does not include "_".`)
       return false
     }
     return true
@@ -105,8 +105,8 @@ export const initialize = (
     }
   }
 
-  return function postMetric(serviceName: string, metricData: any, skipWhitelistCheck = false) {
-    if (!skipWhitelistCheck && !isWhitelisted(metricData)) {
+  return function postMetric(serviceName: string, metricData: any, skipAllowlistCheck = false) {
+    if (!skipAllowlistCheck && !isAllowlisted(metricData)) {
       return
     }
 
