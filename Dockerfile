@@ -1,5 +1,5 @@
 # Start from alpine
-FROM node:12.18-alpine
+FROM node:14.18.2-alpine
 
 # Expose ports
 ENV PORT 8080
