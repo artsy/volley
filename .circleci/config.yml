@@ -1,28 +1,24 @@
 version: 2.1
-
 orbs:
   hokusai: artsy/hokusai@0.10.0
   codecov: codecov/codecov@1.2.5
-
+  horizon: artsy/release@0.0.1
 not_staging_or_release: &not_staging_or_release
   filters:
     branches:
       ignore:
         - staging
         - release
-
 only_main: &only_main
   context: hokusai
   filters:
     branches:
       only: main
-
 only_release: &only_release
   context: hokusai
   filters:
     branches:
       only: release
-
 workflows:
   build-deploy:
     jobs:
@@ -42,18 +38,21 @@ workflows:
                 when: always
             - store_test_results:
                 path: ./reports
-
       - hokusai/push:
           name: push-staging-image
           <<: *only_main
           requires:
             - hokusai/test
-
       - hokusai/deploy-staging:
           <<: *only_main
           project-name: 'volley'
           requires:
             - push-staging-image
-
       - hokusai/deploy-production:
           <<: *only_release
+          requires:
+            - horizon/block
+      - horizon/block:
+          <<: *only_release
+          context: horizon
+          project_id: 32
