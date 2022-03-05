@@ -7,7 +7,7 @@ Datadog Agent proxy service for client-side metrics collection.
 * **Production:** [http://volley.artsy.net](http://volley.artsy.net) | [k8s](https://kubernetes.prd.artsy.systems/#!/deployment/default/volley-web?namespace=default)
 * **Staging:** [http://volley-staging.artsy.net](http://volley-staging.artsy.net) | [k8s](https://kubernetes.stg.artsy.systems/#!/deployment/default/volley-web?namespace=default)
 * **CI/Deploys:** [CircleCi](https://circleci.com/gh/artsy/volley); merged PRs to `artsy/volley#main` are automatically deployed to staging; PRs from `staging` to `release` are automatically deployed to production. [Start a deploy...](https://github.com/artsy/volley/compare/release...staging?expand=1)
-* **Point People:** [@izakp](https://github.com/izakp)
+* **Point People:** [@artsy/velocity-engineers](https://github.com/orgs/artsy/teams/velocity-engineers)
 
 ## Summary
 
