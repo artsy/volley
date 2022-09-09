@@ -139,7 +139,7 @@ router
   })
 
 app.use(cors())
-app.use(koaBody())
+app.use(koaBody({ "jsonLimit": "3mb" }))
 app.use(router.routes())
 
 export const server = app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
