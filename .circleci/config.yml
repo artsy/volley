@@ -28,13 +28,13 @@ workflows:
             - run: mkdir -p ./coverage ./reports
             - run:
                 name: Copy coverage artifacts
-                command: docker cp hokusai_volley_1:/app/coverage ./
+                command: docker cp hokusai-volley-1:/app/coverage ./
                 when: always
             - codecov/upload:
                 file: ./coverage/lcov.info
             - run:
                 name: Copy coverage reports
-                command: docker cp hokusai_volley_1:/app/reports ./
+                command: docker cp hokusai-volley-1:/app/reports ./
                 when: always
             - store_test_results:
                 path: ./reports
