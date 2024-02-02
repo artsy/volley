@@ -1,7 +1,7 @@
 # Volley
 Datadog Agent proxy service for client-side metrics collection.
 
-## Meta [![CircleCI](https://circleci.com/gh/artsy/volley/tree/main.svg?style=svg)](https://circleci.com/gh/artsy/volley/tree/main) [![codecov](https://codecov.io/gh/artsy/volley/branch/main/graph/badge.svg)](https://codecov.io/gh/artsy/volley)
+## Meta [![CircleCI](https://circleci.com/gh/artsy/volley/tree/main.svg?style=shield)](https://circleci.com/gh/artsy/volley/tree/main) [![codecov](https://codecov.io/gh/artsy/volley/branch/main/graph/badge.svg)](https://codecov.io/gh/artsy/volley)
 
 * **State:** Early production
 * **Production:** [http://volley.artsy.net](http://volley.artsy.net) | [k8s](https://kubernetes.prd.artsy.systems/#!/deployment/default/volley-web?namespace=default)
