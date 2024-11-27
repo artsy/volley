@@ -28,5 +28,5 @@ COPY --chown=deploy:deploy . ./
 
 RUN yarn build
 
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+ENTRYPOINT ["/usr/bin/dumb-init", "./scripts/load_secrets_and_run.sh"]
 CMD ["node", "dist/index.js"]
