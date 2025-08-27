@@ -151,11 +151,11 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: volley
+  name: volley-2025
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: "3m"
 spec:
-  ingressClassName: nginx
+  ingressClassName: external-nginx
   rules:
   - host: volley-staging.artsy.net
     http:
