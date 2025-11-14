@@ -30,7 +30,7 @@ Development is done via [Hokusai](https://github.com/artsy/hokusai) (follow the 
 hokusai dev start
 ```
 
-That will build a Docker container with the app's dependencies. You can also run development outside Docker, via `yarn install` and `yarn start` (run `npm install -g yarn`, if you don't already have Yarn).
+That will build a Docker container with the app's dependencies. You can also run development outside Docker, via `yarn install --ignore-scripts` and `yarn start` (run `npm install -g yarn`, if you don't already have Yarn).
 
 To run the tests run the following command:
 ```sh
