@@ -30,7 +30,7 @@
     ]
   },
   "dependencies": {
-    "@koa/cors": "2.2.3",
+    "@koa/cors": "5.0.0",
     "@koa/router": "10.0.0",
     "@sentry/node": "5.11.1",
     "dd-trace": "0.36.2",
